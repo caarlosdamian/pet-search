@@ -16,7 +16,7 @@ export default function FeaturedPets({ pets }: { pets: Pet[] }) {
       {pets.length > 0 ? (
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {pets.map((pet) => (
-            <PetCard key={pet.id} pet={pet} />
+            <PetCard key={pet._id} pet={pet} />
           ))}
         </div>
       ) : (

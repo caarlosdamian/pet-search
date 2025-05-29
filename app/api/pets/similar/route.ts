@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     const { db } = await connectToDatabase()
 
     // Build query for similar pets
-    const query: Record<string, any> = {
+    const query: Record<string, unknown> = {
       type,
       _id: { $ne: new ObjectId(id) },
     }

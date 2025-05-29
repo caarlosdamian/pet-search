@@ -12,7 +12,7 @@ export default function SimilarPets({ pets }: { pets: Pet[] }) {
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">Similar Pets You May Like</h2>
       <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
         {pets.map((pet) => (
-          <PetCard key={pet.id} pet={pet} />
+          <PetCard key={pet._id} pet={pet} />
         ))}
       </div>
       <div className="mt-12 text-center">

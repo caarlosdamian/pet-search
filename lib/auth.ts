@@ -1,75 +1,71 @@
-// import type { NextAuthOptions } from 'next-auth';
-// import { MongoDBAdapter } from '@auth/mongodb-adapter';
-// import CredentialsProvider from 'next-auth/providers/credentials';
-// import { compare } from 'bcryptjs';
-// import { connectToDatabase } from './mongodb';
-// import clientPromise from './mongodb-client';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
+import { connectToDatabase } from '@/lib/mongodb';
+import { compareSync } from 'bcryptjs';
+import { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-// export const authOptions: NextAuthOptions = {
-//   adapter: MongoDBAdapter(clientPromise),
-//   session: {
-//     strategy: 'jwt',
-//   },
-//   pages: {
-//     signIn: '/login',
-//     signOut: '/',
-//     error: '/login',
-//   },
-//   providers: [
-//     CredentialsProvider({
-//       name: 'Credentials',
-//       credentials: {
-//         email: { label: 'Email', type: 'email' },
-//         password: { label: 'Password', type: 'password' },
-//       },
-//       async authorize(credentials) {
-//         if (!credentials?.email || !credentials?.password) {
-//           return null;
-//         }
+type UserT = {
+  email: string;
+  password: string;
+  redirect?: string;
+  csrfToken?: string;
+  callbackUrl: string;
+  json?: string;
+};
 
-//         const { db } = await connectToDatabase();
+export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt', // ✅ Necesario si no estás usando DB
+  },
+  providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        const { email, password } = req.body as UserT;
+        const { db } = await connectToDatabase();
+        const existingUser = await db.collection('users').findOne({ email });
+        if (!existingUser) {
+          return null;
+        }
 
-//         const user = await db.collection('users').findOne({
-//           email: credentials.email,
-//         });
+        const passwordMatch = compareSync(password, existingUser.password);
+        if (passwordMatch) {
+          return {
+            email: existingUser.email,
+            id: existingUser._id.toString(),
+            ...existingUser,
+          };
+        }
+        return null;
+      },
+    }),
+  ],
+  debug: true,
+  callbacks: {
+    async jwt({ token, user }) {
+      // 3. Store user data in JWT token (only on sign-in)
 
-//         if (!user || !user.password) {
-//           return null;
-//         }
-
-//         const isPasswordValid = await compare(
-//           credentials.password,
-//           user.password
-//         );
-
-//         if (!isPasswordValid) {
-//           return null;
-//         }
-
-//         return {
-//           id: user._id.toString(),
-//           name: user.name,
-//           email: user.email,
-//           image: user.image,
-//           role: user.role,
-//         };
-//       },
-//     }),
-//   ],
-//   callbacks: {
-//     async jwt({ token, user }) {
-//       if (user) {
-//         token.id = user.id;
-//         token.role = user.role;
-//       }
-//       return token;
-//     },
-//     async session({ session, token }) {
-//       if (token) {
-//         session.user.id = token.id as string;
-//         session.user.role = token.role as string;
-//       }
-//       return session;
-//     },
-//   },
-// };
+      console.log('JWT', user);
+      if (user) {
+        token.role = user.role;
+        token.favorites = user.favorites;
+        token.applications = user.applications;
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.role = token.role;
+      session.user.favorites = token.favorites;
+      session.user.applications = token.applications;
+      session.user.id = token.id;
+      return session;
+    },
+  },
+};

@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -36,7 +35,7 @@ export default function AdoptionCTA({ pet }: { pet: Pet }) {
             <DialogHeader>
               <DialogTitle>Adopt {pet.name}</DialogTitle>
               <DialogDescription>
-                You're about to start the adoption process for {pet.name}. This will take you to our adoption
+                You&apos;re about to start the adoption process for {pet.name}. This will take you to our adoption
                 application form.
               </DialogDescription>
             </DialogHeader>
@@ -66,7 +65,7 @@ export default function AdoptionCTA({ pet }: { pet: Pet }) {
             <Link href={`/login?redirect=/pets/${pet.id}`}>Log in to Apply</Link>
           </Button>
           <p className="text-center text-sm text-gray-500">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href={`/signup?redirect=/pets/${pet.id}`} className="font-medium text-rose-600 hover:text-rose-500">
               Sign up
             </Link>

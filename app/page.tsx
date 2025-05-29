@@ -3,8 +3,6 @@ import FeaturedPets from '@/components/home/featured-pets';
 import SearchBar from '@/components/home/search-bar';
 import Testimonials from '@/components/home/testimonials';
 import CallToAction from '@/components/home/call-to-action';
-import { connectToDatabase } from '@/lib/mongodb';
-import { pets } from '@/lib/mongotest';
 
 export default async function Home() {
   // Fetch featured pets from the API

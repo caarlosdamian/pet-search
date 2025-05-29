@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     const skip = (page - 1) * limit
 
     // Build query
-    const query: Record<string, any> = {}
+    const query: Record<string, unknown> = {}
 
     if (type) {
       query.type = type.includes(",") ? { $in: type.split(",") } : type
@@ -47,7 +47,6 @@ export async function GET(request: Request) {
 
     // Get pets with pagination
     const pets = await db.collection("pets").find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).toArray()
-    console.log('pets',pets)
     // Get total count for pagination
     const totalPets = await db.collection("pets").countDocuments(query)
     const totalPages = Math.ceil(totalPets / limit)

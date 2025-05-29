@@ -8,7 +8,6 @@ import type { Pet } from "@/lib/types"
 
 export default function PetCard({ pet }: { pet: Pet }) {
 
-  console.log('PROBANDO',pet)
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
       <div className="aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none sm:h-60">

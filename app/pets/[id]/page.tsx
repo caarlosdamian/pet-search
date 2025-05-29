@@ -1,22 +1,27 @@
-import Link from "next/link"
-import { notFound } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Heart, Share2, MapPin, Calendar, Info } from "lucide-react"
-import AdoptionCTA from "@/components/pets/adoption-cta"
-import PetGallery from "@/components/pets/pet-gallery"
-import SimilarPets from "@/components/pets/similar-pets"
-import type { Pet } from "@/lib/types"
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Heart, Share2, MapPin, Calendar, Info } from 'lucide-react';
+import AdoptionCTA from '@/components/pets/adoption-cta';
+import PetGallery from '@/components/pets/pet-gallery';
+import SimilarPets from '@/components/pets/similar-pets';
+import type { Pet } from '@/lib/types';
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const pet = await getPet(params.id)
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const pet = await getPet(id);
 
   if (!pet) {
     return {
-      title: "Pet Not Found - PawFinder",
-      description: "The pet you are looking for could not be found.",
-    }
+      title: 'Pet Not Found - PawFinder',
+      description: 'The pet you are looking for could not be found.',
+    };
   }
 
   return {
@@ -27,24 +32,29 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       description: `${pet.name} is a ${pet.age}-year-old ${pet.breed} looking for a loving home.`,
       images: [
         {
-          url: pet.imageUrl || "/images/default-pet.jpg",
+          url: pet.imageUrl || '/images/default-pet.jpg',
           width: 1200,
           height: 630,
           alt: pet.name,
         },
       ],
     },
-  }
+  };
 }
 
-export default async function PetPage({ params }: { params: { id: string } }) {
-  const pet = await getPet(params.id)
+export default async function PetPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const pet = await getPet(id);
 
   if (!pet) {
-    notFound()
+    notFound();
   }
 
-  const similarPets = await getSimilarPets(pet)
+  const similarPets = await getSimilarPets(pet);
 
   return (
     <div className="bg-white">
@@ -76,9 +86,15 @@ export default async function PetPage({ params }: { params: { id: string } }) {
           {/* Pet details */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
             <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">{pet.name}</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+                {pet.name}
+              </h1>
               <div className="flex space-x-2">
-                <Button variant="outline" size="icon" aria-label="Add to favorites">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="Add to favorites"
+                >
                   <Heart className="h-5 w-5 text-rose-500" />
                 </Button>
                 <Button variant="outline" size="icon" aria-label="Share">
@@ -110,7 +126,7 @@ export default async function PetPage({ params }: { params: { id: string } }) {
             <div className="mt-2 flex items-center">
               <Calendar className="h-5 w-5 text-gray-500" />
               <span className="ml-2 text-gray-700">
-                {pet.age} {pet.age === 1 ? "year" : "years"} old
+                {pet.age} {pet.age === 1 ? 'year' : 'years'} old
               </span>
             </div>
 
@@ -137,25 +153,25 @@ export default async function PetPage({ params }: { params: { id: string } }) {
                     <div className="flex items-center">
                       <Info className="h-5 w-5 text-gray-500" />
                       <span className="ml-2 text-sm text-gray-700">
-                        Spayed/Neutered: {pet.spayedNeutered ? "Yes" : "No"}
+                        Spayed/Neutered: {pet.spayedNeutered ? 'Yes' : 'No'}
                       </span>
                     </div>
                     <div className="flex items-center">
                       <Info className="h-5 w-5 text-gray-500" />
                       <span className="ml-2 text-sm text-gray-700">
-                        House Trained: {pet.houseTrained ? "Yes" : "No"}
+                        House Trained: {pet.houseTrained ? 'Yes' : 'No'}
                       </span>
                     </div>
                     <div className="flex items-center">
                       <Info className="h-5 w-5 text-gray-500" />
                       <span className="ml-2 text-sm text-gray-700">
-                        Good with Kids: {pet.goodWithKids ? "Yes" : "No"}
+                        Good with Kids: {pet.goodWithKids ? 'Yes' : 'No'}
                       </span>
                     </div>
                     <div className="flex items-center">
                       <Info className="h-5 w-5 text-gray-500" />
                       <span className="ml-2 text-sm text-gray-700">
-                        Good with Pets: {pet.goodWithPets ? "Yes" : "No"}
+                        Good with Pets: {pet.goodWithPets ? 'Yes' : 'No'}
                       </span>
                     </div>
                   </div>
@@ -168,18 +184,20 @@ export default async function PetPage({ params }: { params: { id: string } }) {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex items-center">
                       <Info className="h-5 w-5 text-gray-500" />
-                      <span className="ml-2 text-sm text-gray-700">Vaccinated: {pet.vaccinated ? "Yes" : "No"}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Info className="h-5 w-5 text-gray-500" />
                       <span className="ml-2 text-sm text-gray-700">
-                        Microchipped: {pet.microchipped ? "Yes" : "No"}
+                        Vaccinated: {pet.vaccinated ? 'Yes' : 'No'}
                       </span>
                     </div>
                     <div className="flex items-center">
                       <Info className="h-5 w-5 text-gray-500" />
                       <span className="ml-2 text-sm text-gray-700">
-                        Special Needs: {pet.specialNeeds ? "Yes" : "No"}
+                        Microchipped: {pet.microchipped ? 'Yes' : 'No'}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Info className="h-5 w-5 text-gray-500" />
+                      <span className="ml-2 text-sm text-gray-700">
+                        Special Needs: {pet.specialNeeds ? 'Yes' : 'No'}
                       </span>
                     </div>
                   </div>
@@ -187,7 +205,9 @@ export default async function PetPage({ params }: { params: { id: string } }) {
               </TabsContent>
               <TabsContent value="requirements" className="mt-4">
                 <div className="space-y-4">
-                  <p className="text-sm text-gray-700">{pet.adoptionRequirements}</p>
+                  <p className="text-sm text-gray-700">
+                    {pet.adoptionRequirements}
+                  </p>
                   <ul className="list-disc pl-5 text-sm text-gray-700">
                     <li>Application review</li>
                     <li>Home visit</li>
@@ -206,43 +226,48 @@ export default async function PetPage({ params }: { params: { id: string } }) {
         <SimilarPets pets={similarPets} />
       </div>
     </div>
-  )
+  );
 }
 
 async function getPet(id: string): Promise<Pet | null> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/pets/${id}`, {
-      next: { revalidate: 60 }, // Revalidate every minute
-    })
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL || ''}/api/pets/${id}`,
+      {
+        next: { revalidate: 60 }, // Revalidate every minute
+      }
+    );
 
     if (!response.ok) {
       if (response.status === 404) {
-        return null
+        return null;
       }
-      throw new Error("Failed to fetch pet")
+      throw new Error('Failed to fetch pet');
     }
 
-    return await response.json()
+    return await response.json();
   } catch (error) {
-    console.error("Error fetching pet:", error)
-    return null
+    console.error('Error fetching pet:', error);
+    return null;
   }
 }
 
 async function getSimilarPets(pet: Pet): Promise<Pet[]> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || ""}/api/pets/similar?type=${pet.type}&breed=${pet.breed}&id=${pet.id}`,
-      { next: { revalidate: 60 } },
-    )
+      `${process.env.NEXT_PUBLIC_API_URL || ''}/api/pets/similar?type=${
+        pet.type
+      }&breed=${pet.breed}&id=${pet.id}`,
+      { next: { revalidate: 60 } }
+    );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch similar pets")
+      throw new Error('Failed to fetch similar pets');
     }
 
-    return await response.json()
+    return await response.json();
   } catch (error) {
-    console.error("Error fetching similar pets:", error)
-    return []
+    console.error('Error fetching similar pets:', error);
+    return [];
   }
 }

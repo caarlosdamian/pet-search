@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-// import { useSession, signOut } from "next-auth/react"
+import { useSession, signOut } from 'next-auth/react';
 import { Menu, X, User, Heart, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { signOut } from 'next-auth/react';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -26,7 +25,11 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  // const { data: session } = useSession()
+  const { data: session, status } = useSession();
+
+  if (status === 'loading') {
+    return null; // Or return consistent markup
+  }
 
   return (
     <header className="bg-white shadow">
@@ -70,7 +73,7 @@ export default function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {true ? (
+          {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -111,7 +114,7 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <Link
                 href="/login"
                 className="text-sm font-semibold leading-6 text-gray-900 hover:text-rose-600"
@@ -120,7 +123,7 @@ export default function Header() {
               </Link>
               <Link
                 href="/signup"
-                className="rounded-md bg-rose-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+                className="rounded-md bg-rose-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
               >
                 Sign up
               </Link>
