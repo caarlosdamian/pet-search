@@ -51,7 +51,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       // 3. Store user data in JWT token (only on sign-in)
 
-      console.log('JWT', user);
       if (user) {
         token.role = user.role;
         token.favorites = user.favorites;

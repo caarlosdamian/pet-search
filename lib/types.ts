@@ -18,7 +18,7 @@ export interface Pet {
   goodWithPets: boolean;
   vaccinated: boolean;
   microchipped: boolean;
-  specialNeeds: boolean;
+  specialNeeds?: boolean;
   healthDetails: string;
   adoptionRequirements: string;
   adoptionFee: number;

@@ -1,15 +1,14 @@
 import { notFound } from 'next/navigation';
 import AdoptionForm from '@/components/adoption/adoption-form';
-import type { Pet } from '@/lib/types';
-import { PageProps } from '@/.next/types/app/page';
+import { getPet } from '@/services/pets';
 
 export const metadata = {
   title: 'Adoption Application - PawFinder',
   description: 'Apply to adopt a pet from PawFinder.',
 };
 
-export default async function AdoptionPage({ params }: PageProps) {
-  const { id } = params as unknown as { id: string };
+export default async function AdoptionPage({ params }: { params: string }) {
+  const { id } = (await params) as unknown as { id: string };
   const pet = await getPet(id);
 
   if (!pet) {
@@ -34,27 +33,4 @@ export default async function AdoptionPage({ params }: PageProps) {
       </div>
     </div>
   );
-}
-
-async function getPet(id: string): Promise<Pet | null> {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || ''}/api/pets/${id}`,
-      {
-        next: { revalidate: 60 },
-      }
-    );
-
-    if (!response.ok) {
-      if (response.status === 404) {
-        return null;
-      }
-      throw new Error('Failed to fetch pet');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching pet:', error);
-    return null;
-  }
 }

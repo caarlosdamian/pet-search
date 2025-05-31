@@ -1,75 +1,84 @@
-"use client"
+'use client';
 
-import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function PaginationControls({ totalPages }: { totalPages: number }) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+export default function PaginationControls({
+  totalPages,
+  pageUrl,
+}: {
+  totalPages: number;
+  pageUrl?: string;
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const currentPage = Number(searchParams.get("page") || "1")
+  const currentPage = Number(searchParams.get('page') || '1');
 
   const createPageURL = (pageNumber: number) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set("page", pageNumber.toString())
-    return `/pets?${params.toString()}`
-  }
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', pageNumber.toString());
+    const url = pageUrl
+      ? `${pageUrl}?${params.toString()}`
+      : `/pets?${params.toString()}`;
+    return url;
+  };
 
   const goToPage = (pageNumber: number) => {
-    router.push(createPageURL(pageNumber))
-  }
+    router.push(createPageURL(pageNumber));
+  };
 
   // Generate page numbers to display
   const getPageNumbers = () => {
-    const pages = []
-    const maxPagesToShow = 5
+    const pages = [];
+    const maxPagesToShow = 5;
 
     if (totalPages <= maxPagesToShow) {
       // Show all pages if there are fewer than maxPagesToShow
       for (let i = 1; i <= totalPages; i++) {
-        pages.push(i)
+        pages.push(i);
       }
     } else {
       // Always show first page
-      pages.push(1)
+      pages.push(1);
 
       // Calculate start and end of page range
-      let startPage = Math.max(2, currentPage - 1)
-      let endPage = Math.min(totalPages - 1, currentPage + 1)
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
 
       // Adjust if at the beginning or end
       if (currentPage <= 2) {
-        endPage = 4
+        endPage = 4;
       } else if (currentPage >= totalPages - 1) {
-        startPage = totalPages - 3
+        startPage = totalPages - 3;
       }
 
       // Add ellipsis if needed
       if (startPage > 2) {
-        pages.push(-1) // -1 represents ellipsis
+        pages.push(-1); // -1 represents ellipsis
       }
 
       // Add middle pages
       for (let i = startPage; i <= endPage; i++) {
-        pages.push(i)
+        pages.push(i);
       }
 
       // Add ellipsis if needed
       if (endPage < totalPages - 1) {
-        pages.push(-2) // -2 represents ellipsis
+        pages.push(-2); // -2 represents ellipsis
       }
 
       // Always show last page
       if (totalPages > 1) {
-        pages.push(totalPages)
+        pages.push(totalPages);
       }
     }
 
-    return pages
-  }
+    return pages;
+  };
 
-  const pageNumbers = getPageNumbers()
+  const pageNumbers = getPageNumbers();
 
   return (
     <nav className="flex items-center justify-center border-t border-gray-200 px-4 sm:px-0">
@@ -101,13 +110,13 @@ export default function PaginationControls({ totalPages }: { totalPages: number 
               onClick={() => goToPage(pageNumber)}
               className={`inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium ${
                 pageNumber === currentPage
-                  ? "border-rose-500 text-rose-600"
-                  : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  ? 'border-rose-500 text-rose-600'
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
               }`}
             >
               {pageNumber}
             </Button>
-          ),
+          )
         )}
       </div>
 
@@ -123,5 +132,5 @@ export default function PaginationControls({ totalPages }: { totalPages: number 
         </Button>
       </div>
     </nav>
-  )
+  );
 }

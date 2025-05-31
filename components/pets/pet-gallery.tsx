@@ -15,8 +15,8 @@ export default function PetGallery({ pet }: { pet: Pet }) {
       {/* Main image */}
       <div className="aspect-h-1 aspect-w-1 w-full">
         <Image
-          src={images[selectedImage].url || "/placeholder.svg"}
-          alt={images[selectedImage].alt || pet.name}
+          src={images[selectedImage]?.url || "/placeholder.svg"}
+          alt={images[selectedImage]?.alt || pet.name}
           width={600}
           height={600}
           className="h-full w-full object-cover object-center rounded-lg"

@@ -1,30 +1,56 @@
-import { NextResponse } from "next/server"
-import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import { NextResponse } from 'next/server';
+import { connectToDatabase } from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
 export async function GET(
-  request: Request, 
+  req: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params;
+
+    const { db } = await connectToDatabase();
+
+    const pet = await db.collection('pets').findOne({
+      _id: new ObjectId(id),
+    });
+
+    console.log('PET', pet);
+    if (!pet) {
+      return NextResponse.json({ error: 'Pet not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(pet);
+  } catch (error) {
+    console.error('Error fetching pet:', error);
+    return NextResponse.json({ error: 'Failed to fetch pet' }, { status: 500 });
+  }
+}
+
+export async function PATCH(
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Await the params since it's a Promise
-    const { id } = await params
+    const { id } = await params;
+    const body = await request.json();
 
-    // Connect to database
-    const { db } = await connectToDatabase()
+    const { db } = await connectToDatabase();
 
-    // Get pet by ID
-    const pet = await db.collection("pets").findOne({
+    const pet = await db.collection('pets').findOne({
       _id: new ObjectId(id),
-    })
+    });
 
     if (!pet) {
-      return NextResponse.json({ error: "Pet not found" }, { status: 404 })
+      return NextResponse.json({ error: 'Pet not found' }, { status: 404 });
     }
 
-    return NextResponse.json(pet)
+    const newPet = await db
+      .collection('pets')
+      .updateOne({ _id: new ObjectId(id) }, { $set: body });
+    return NextResponse.json(newPet);
   } catch (error) {
-    console.error("Error fetching pet:", error)
-    return NextResponse.json({ error: "Failed to fetch pet" }, { status: 500 })
+    console.error('Error fetching pet:', error);
+    return NextResponse.json({ error: 'Failed to fetch pet' }, { status: 500 });
   }
 }
