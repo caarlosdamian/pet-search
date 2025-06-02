@@ -54,7 +54,7 @@ export default function AdoptionCTA({ pet }: { pet: Pet }) {
                 Cancel
               </Button>
               <Button asChild className="bg-rose-600 hover:bg-rose-500">
-                <Link href={`/adopt/${pet.id}`}>Continue to Application</Link>
+                <Link href={`/adopt/${pet._id}`}>Continue to Application</Link>
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -62,11 +62,11 @@ export default function AdoptionCTA({ pet }: { pet: Pet }) {
       ) : (
         <div className="mt-6 space-y-4">
           <Button asChild className="w-full bg-rose-600 hover:bg-rose-500">
-            <Link href={`/login?redirect=/pets/${pet.id}`}>Log in to Apply</Link>
+            <Link href={`/login?redirect=/pets/${pet._id}`}>Log in to Apply</Link>
           </Button>
           <p className="text-center text-sm text-gray-500">
             Don&apos;t have an account?{" "}
-            <Link href={`/signup?redirect=/pets/${pet.id}`} className="font-medium text-rose-600 hover:text-rose-500">
+            <Link href={`/signup?redirect=/pets/${pet._id}`} className="font-medium text-rose-600 hover:text-rose-500">
               Sign up
             </Link>
           </p>

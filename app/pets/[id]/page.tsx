@@ -50,8 +50,6 @@ export default async function PetPage({
   const { id } = await params;
   const pet = await getPet(id);
 
-  console.log('MASCOTA',pet)
-
   if (!pet) {
     notFound();
   }

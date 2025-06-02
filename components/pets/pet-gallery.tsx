@@ -11,9 +11,9 @@ export default function PetGallery({ pet }: { pet: Pet }) {
   const images = pet.images || [{ url: pet.imageUrl || "/placeholder.svg?height=600&width=600", alt: pet.name }]
 
   return (
-    <div className="flex flex-col-reverse">
+    <div className="flex flex-col">
       {/* Main image */}
-      <div className="aspect-h-1 aspect-w-1 w-full">
+      <div className="aspect-h-1 aspect-w-1 w-full object-cover max-h-[600px]">
         <Image
           src={images[selectedImage]?.url || "/placeholder.svg"}
           alt={images[selectedImage]?.alt || pet.name}

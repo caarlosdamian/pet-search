@@ -48,7 +48,7 @@ export async function GET(request: Request) {
     // Get pets with pagination
     const pets = await db
       .collection('pets')
-      .find(query)
+      .find({ ...query, adopted: { $exists: false } })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)

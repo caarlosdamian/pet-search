@@ -34,4 +34,46 @@ export const petFormSchema = z.object({
     .min(0, 'Adoption fee must be a positive number'),
 });
 
+export const adoptionFormSchema = z.object({
+  // Personal Information
+  personalInfo: z.object({
+    name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
+    email: z.string().email({ message: 'Please enter a valid email address' }),
+    phone: z.string().min(10, { message: 'Please enter a valid phone number' }),
+    address: z.string().min(5, { message: 'Please enter your full address' }),
+    city: z.string().min(2, { message: 'Please enter your city' }),
+    state: z.string().min(2, { message: 'Please enter your state' }),
+    zip: z.string().min(5, { message: 'Please enter a valid ZIP code' }),
+  }),
+
+  // Living Situation
+  livingInfo: z.object({
+    homeType: z.enum(['house', 'apartment', 'condo', 'other'], {
+      required_error: 'Please select your home type',
+    }),
+    ownRent: z.enum(['own', 'rent'], {
+      required_error: 'Please select whether you own or rent',
+    }),
+    landlordContact: z.string().optional(),
+    hasYard: z.boolean().default(false),
+    fenceHeight: z.string().optional(),
+  }),
+
+  // Pet Experience
+  petExperience: z.object({
+    currentPets: z.string(),
+    pastPets: z.string(),
+    veterinarianContact: z.string(),
+  }),
+
+  // Additional Information
+  additionalInfo: z.string().optional(),
+
+  // Terms and Conditions
+  agreeToTerms: z.boolean().refine((val) => val === true, {
+    message: 'You must agree to the terms and conditions',
+  }),
+});
+
 export type PetFormValues = z.infer<typeof petFormSchema>;
+export type AdoptionFormValues = z.infer<typeof adoptionFormSchema>;

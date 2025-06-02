@@ -12,10 +12,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { connectToDatabase } from '@/lib/mongodb';
 import PaginationControls from '@/components/pets/pagination-controls';
 import PetFilters from '@/components/admin/pet-filters';
-
+import { getPets } from '@/services/pets';
+import { PetDelete } from '@/components/admin/pet-delete';
 export const metadata = {
   title: 'Manage Pets - PawFinder Admin',
   description: 'Add, edit, and manage pets on the PawFinder platform.',
@@ -26,7 +26,8 @@ export default async function AdminPetsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const { pets, totalPages } = await getPets(searchParams);
+  const params = await searchParams
+  const { pets, totalPages } = await getPets(params);
 
   return (
     <div className="space-y-6 bg-gray-100">
@@ -106,10 +107,10 @@ export default async function AdminPetsPage({
                       })}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
+                      <div className="flex justify-end gap-3">
                         <Link
                           href={`/admin/pets/${pet._id}/edit`}
-                          className="text-sm font-medium text-gray-700 hover:text-gray-900"
+                          className="text-sm font-medium text-blue-500 hover:text-blue-900"
                         >
                           Edit
                         </Link>
@@ -120,6 +121,7 @@ export default async function AdminPetsPage({
                         >
                           View
                         </Link>
+                        <PetDelete id={pet._id.toString() as unknown as string || ''} />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -135,63 +137,9 @@ export default async function AdminPetsPage({
           </Table>
         </div>
         <div className="p-4">
-          <PaginationControls totalPages={totalPages} pageUrl='/admin/pets' />
+          <PaginationControls totalPages={totalPages} pageUrl="/admin/pets" />
         </div>
       </div>
     </div>
   );
-}
-
-async function getPets(searchParams: {
-  [key: string]: string | string[] | undefined;
-}) {
-  try {
-    const { db } = await connectToDatabase();
-
-    // Build query from search params
-    const query: Record<string, unknown> = {};
-
-    if (searchParams.type) {
-      query.type = searchParams.type;
-    }
-
-    if (searchParams.location) {
-      query.location = searchParams.location;
-    }
-
-    if (searchParams.status === 'adopted') {
-      query.adopted = true;
-    } else if (searchParams.status === 'available') {
-      query.adopted = { $ne: true };
-    }
-
-    // Pagination
-    const page = Number(searchParams?.page) || 1;
-    const limit = 10;
-    const skip = (page - 1) * limit;
-
-    // Get pets with pagination
-    const pets = await db
-      .collection('pets')
-      .find(query)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .toArray();
-
-    // Get total count for pagination
-    const totalPets = await db.collection('pets').countDocuments(query);
-    const totalPages = Math.ceil(totalPets / limit);
-
-    return {
-      pets,
-      totalPages,
-    };
-  } catch (error) {
-    console.error('Error fetching pets:', error);
-    return {
-      pets: [],
-      totalPages: 0,
-    };
-  }
 }

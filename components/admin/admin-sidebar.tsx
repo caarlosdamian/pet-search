@@ -26,12 +26,14 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   const isActive = (path: string) => {
-    return pathname === path || pathname.startsWith(`${path}/`);
+    return pathname === path
+      ? pathname === path
+      : pathname.endsWith(`${path}/`);
   };
 
   return (
-    <SidebarProvider defaultOpen className=''>
-      <Sidebar variant='floating' className='relative top-0 left-0' >
+    <SidebarProvider defaultOpen className="">
+      <Sidebar variant="floating" className="relative top-0 left-0">
         <SidebarHeader className="border-b border-gray-200 p-4">
           <Link href="/admin" className="flex items-center gap-2">
             <PawPrint className="h-6 w-6 text-rose-600" />

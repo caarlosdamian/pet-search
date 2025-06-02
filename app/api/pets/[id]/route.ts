@@ -15,12 +15,29 @@ export async function GET(
       _id: new ObjectId(id),
     });
 
-    console.log('PET', pet);
     if (!pet) {
       return NextResponse.json({ error: 'Pet not found' }, { status: 404 });
     }
 
     return NextResponse.json(pet);
+  } catch (error) {
+    console.error('Error fetching pet:', error);
+    return NextResponse.json({ error: 'Failed to fetch pet' }, { status: 500 });
+  }
+}
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ id: string; path: string }> }
+) {
+  try {
+    const { id } = await context.params;
+
+    const { db } = await connectToDatabase();
+
+    await db.collection('pets').findOneAndDelete({
+      _id: new ObjectId(id),
+    });
+    return NextResponse.json({ message: 'Deleted successfullly' });
   } catch (error) {
     console.error('Error fetching pet:', error);
     return NextResponse.json({ error: 'Failed to fetch pet' }, { status: 500 });

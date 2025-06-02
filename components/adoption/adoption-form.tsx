@@ -1,184 +1,174 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// WIP PENDING TO CHECK 
-// @ts-nocheck
-"use client"
+'use client';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-// import { useSession } from "next-auth/react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import type { Pet } from "@/lib/types"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { toast } from 'sonner';
+import { adoptionFormSchema, AdoptionFormValues } from '@/lib/shemas';
+import { Pet } from '@/lib/types';
 
 // Define form schema with Zod
-const formSchema = z.object({
-  // Personal Information
-  personalInfo: z.object({
-    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Please enter a valid email address" }),
-    phone: z.string().min(10, { message: "Please enter a valid phone number" }),
-    address: z.string().min(5, { message: "Please enter your full address" }),
-    city: z.string().min(2, { message: "Please enter your city" }),
-    state: z.string().min(2, { message: "Please enter your state" }),
-    zip: z.string().min(5, { message: "Please enter a valid ZIP code" }),
-  }),
 
-  // Living Situation
-  livingInfo: z.object({
-    homeType: z.enum(["house", "apartment", "condo", "other"], {
-      required_error: "Please select your home type",
-    }),
-    ownRent: z.enum(["own", "rent"], {
-      required_error: "Please select whether you own or rent",
-    }),
-    landlordContact: z.string().optional(),
-    hasYard: z.boolean().default(false),
-    fenceHeight: z.string().optional(),
-  }),
-
-  // Pet Experience
-  petExperience: z.object({
-    currentPets: z.string(),
-    pastPets: z.string(),
-    veterinarianContact: z.string(),
-  }),
-
-  // Additional Information
-  additionalInfo: z.string().optional(),
-
-  // Terms and Conditions
-  agreeToTerms: z.boolean().refine((val) => val === true, {
-    message: "You must agree to the terms and conditions",
-  }),
-})
-
-type FormValues = z.infer<typeof formSchema>
-
-export default function AdoptionForm({ pet }: { pet: Pet }) {
-  const router = useRouter()
-  // const { data: session } = useSession()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [currentStep, setCurrentStep] = useState(0)
+export default function AdoptionForm({
+  pet,
+  userId,
+}: {
+  pet: Pet;
+  userId: string;
+}) {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   // Initialize form with default values
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
+  const form = useForm({
+    resolver: zodResolver(adoptionFormSchema),
+    values: {
       personalInfo: {
-        // name: session?.user?.name || "",
-        // email: session?.user?.email || "",
-        phone: "",
-        address: "",
-        city: "",
-        state: "",
-        zip: "",
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
       },
       livingInfo: {
-        homeType: "house",
-        ownRent: "own",
-        landlordContact: "",
+        homeType: 'house',
+        ownRent: 'own',
+        landlordContact: '',
         hasYard: false,
-        fenceHeight: "",
+        fenceHeight: '',
       },
       petExperience: {
-        currentPets: "",
-        pastPets: "",
-        veterinarianContact: "",
+        currentPets: '',
+        pastPets: '',
+        veterinarianContact: '',
       },
-      additionalInfo: "",
+      additionalInfo: '',
       agreeToTerms: false,
     },
-  })
+  });
 
-  // Form steps
   const steps = [
     {
-      title: "Personal Information",
+      title: 'Personal Information',
       fields: [
-        "personalInfo.name",
-        "personalInfo.email",
-        "personalInfo.phone",
-        "personalInfo.address",
-        "personalInfo.city",
-        "personalInfo.state",
-        "personalInfo.zip",
+        'personalInfo.name',
+        'personalInfo.email',
+        'personalInfo.phone',
+        'personalInfo.address',
+        'personalInfo.city',
+        'personalInfo.state',
+        'personalInfo.zip',
       ],
     },
     {
-      title: "Living Situation",
+      title: 'Living Situation',
       fields: [
-        "livingInfo.homeType",
-        "livingInfo.ownRent",
-        "livingInfo.landlordContact",
-        "livingInfo.hasYard",
-        "livingInfo.fenceHeight",
+        'livingInfo.homeType',
+        'livingInfo.ownRent',
+        'livingInfo.landlordContact',
+        'livingInfo.hasYard',
+        'livingInfo.fenceHeight',
       ],
     },
     {
-      title: "Pet Experience",
-      fields: ["petExperience.currentPets", "petExperience.pastPets", "petExperience.veterinarianContact"],
+      title: 'Pet Experience',
+      fields: [
+        'petExperience.currentPets',
+        'petExperience.pastPets',
+        'petExperience.veterinarianContact',
+      ],
     },
     {
-      title: "Additional Information",
-      fields: ["additionalInfo", "agreeToTerms"],
+      title: 'Additional Information',
+      fields: ['additionalInfo', 'agreeToTerms'],
     },
-  ]
+  ];
 
   // Handle form submission
-  async function onSubmit(data: FormValues) {
-    setIsSubmitting(true)
+  async function onSubmit(data: AdoptionFormValues) {
+    setIsSubmitting(true);
+    setError(null);
 
     try {
-      const response = await fetch("/api/adoption-applications", {
-        method: "POST",
+      const response = await fetch('/api/adoption-applications', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          petId: pet.id,
+          petId: pet._id,
+          userId: userId,
           ...data,
         }),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to submit application")
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit application');
       }
 
+      // Show success toast
+      toast('Application submitted!');
+
       // Redirect to success page
-      router.push(`/adopt/${pet.id}/success`)
+      router.push(`/adopt/${pet._id}/success`);
     } catch (error) {
-      console.error("Error submitting application:", error)
-      // Handle error (show error message, etc.)
+      console.error('Error submitting application:', error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : 'Failed to submit application. Please try again.'
+      );
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
   // Navigate to next step
   const nextStep = async () => {
-    const fields = steps[currentStep].fields
-    const output = await form.trigger(fields as unknown)
+    const fields = steps[currentStep].fields;
+    const output = await form.trigger(fields as unknown as []);
 
-    if (!output) return
+    if (!output) return;
 
     if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     }
-  }
+  };
 
   // Navigate to previous step
   const prevStep = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
+      setCurrentStep(currentStep - 1);
     }
-  }
+  };
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-8">
@@ -189,7 +179,9 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
             <div key={index} className="flex flex-col items-center">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  index <= currentStep ? "bg-rose-600 text-white" : "bg-gray-200 text-gray-600"
+                  index <= currentStep
+                    ? 'bg-rose-600 text-white'
+                    : 'bg-gray-200 text-gray-600'
                 }`}
               >
                 {index + 1}
@@ -205,6 +197,12 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
           />
         </div>
       </div>
+
+      {error && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -235,7 +233,11 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="john@example.com" {...field} />
+                        <Input
+                          type="email"
+                          placeholder="john@example.com"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -328,7 +330,10 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Home Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select your home type" />
@@ -352,7 +357,10 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Do you own or rent your home?</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select option" />
@@ -368,7 +376,7 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                 )}
               />
 
-              {form.watch("livingInfo.ownRent") === "rent" && (
+              {form.watch('livingInfo.ownRent') === 'rent' && (
                 <FormField
                   control={form.control}
                   name="livingInfo.landlordContact"
@@ -378,7 +386,9 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                       <FormControl>
                         <Input placeholder="Name and phone number" {...field} />
                       </FormControl>
-                      <FormDescription>We may contact your landlord to confirm pet policies.</FormDescription>
+                      <FormDescription>
+                        We may contact your landlord to confirm pet policies.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -391,17 +401,22 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>Do you have a yard?</FormLabel>
-                      <FormDescription>This is important for dogs that need outdoor space.</FormDescription>
+                      <FormDescription>
+                        This is important for dogs that need outdoor space.
+                      </FormDescription>
                     </div>
                   </FormItem>
                 )}
               />
 
-              {form.watch("livingInfo.hasYard") && (
+              {form.watch('livingInfo.hasYard') && (
                 <FormField
                   control={form.control}
                   name="livingInfo.fenceHeight"
@@ -448,7 +463,10 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                   <FormItem>
                     <FormLabel>Past Pet Experience</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Please describe your past experience with pets." {...field} />
+                      <Textarea
+                        placeholder="Please describe your past experience with pets."
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -462,9 +480,15 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                   <FormItem>
                     <FormLabel>Veterinarian Contact Information</FormLabel>
                     <FormControl>
-                      <Input placeholder="Name, clinic, and phone number" {...field} />
+                      <Input
+                        placeholder="Name, clinic, and phone number"
+                        {...field}
+                      />
                     </FormControl>
-                    <FormDescription>If you dont have a current veterinarian, please write None.</FormDescription>
+                    <FormDescription>
+                      If you don&apos;t have a current veterinarian, please
+                      write &ldquo;None&ldquo;.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -500,16 +524,23 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>Terms and Conditions</FormLabel>
                       <FormDescription>
-                        I agree to the{" "}
-                        <a href="/terms" className="text-rose-600 hover:text-rose-500">
+                        I agree to the{' '}
+                        <a
+                          href="/terms"
+                          className="text-rose-600 hover:text-rose-500"
+                        >
                           terms and conditions
-                        </a>{" "}
-                        and understand that submitting this application does not guarantee adoption.
+                        </a>{' '}
+                        and understand that submitting this application does not
+                        guarantee adoption.
                       </FormDescription>
                     </div>
                   </FormItem>
@@ -520,7 +551,12 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
 
           {/* Navigation buttons */}
           <div className="flex justify-between pt-4 border-t">
-            <Button type="button" variant="outline" onClick={prevStep} disabled={currentStep === 0}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={prevStep}
+              disabled={currentStep === 0}
+            >
               Previous
             </Button>
 
@@ -529,13 +565,24 @@ export default function AdoptionForm({ pet }: { pet: Pet }) {
                 Next
               </Button>
             ) : (
-              <Button type="submit" disabled={isSubmitting} className="bg-rose-600 hover:bg-rose-500">
-                {isSubmitting ? "Submitting..." : "Submit Application"}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-rose-600 hover:bg-rose-500"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />{' '}
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit Application'
+                )}
               </Button>
             )}
           </div>
         </form>
       </Form>
     </div>
-  )
+  );
 }

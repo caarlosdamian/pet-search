@@ -14,7 +14,6 @@ export const metadata = {
 
 export default async function DashboardPage() {
   const session = (await getServerSession(authOptions)) as CustomSession;
-  console.log('ses', session);
 
   if (!session) {
     redirect('/login?callbackUrl=/dashboard');
@@ -32,7 +31,7 @@ export default async function DashboardPage() {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             My Dashboard
           </h1>
-          <p className="mt-2 text-gray-600">Welcome back, !</p>
+          <p className="mt-2 text-gray-600">Welcome back, {session.user.name}!</p>
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
