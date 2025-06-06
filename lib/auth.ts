@@ -17,7 +17,7 @@ type UserT = {
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: 'jwt', // ✅ Necesario si no estás usando DB
+    strategy: 'jwt',
   },
   providers: [
     CredentialsProvider({
@@ -39,6 +39,7 @@ export const authOptions: NextAuthOptions = {
           return {
             email: existingUser.email,
             id: existingUser._id.toString(),
+            organizationId: user.organizationId?.toString(),
             ...existingUser,
           };
         }
@@ -49,13 +50,12 @@ export const authOptions: NextAuthOptions = {
   debug: true,
   callbacks: {
     async jwt({ token, user }) {
-      // 3. Store user data in JWT token (only on sign-in)
-
       if (user) {
         token.role = user.role;
         token.favorites = user.favorites;
         token.applications = user.applications;
         token.id = user.id;
+        token.organizationId = user.organizationId;
       }
       return token;
     },
@@ -64,6 +64,8 @@ export const authOptions: NextAuthOptions = {
       session.user.favorites = token.favorites;
       session.user.applications = token.applications;
       session.user.id = token.id;
+      session.user.organizationId = token.organizationId as string;
+
       return session;
     },
   },

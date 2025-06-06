@@ -7,9 +7,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // Remove the ** wildcards
+        hostname: 'images.unsplash.com',
         port: '',
-        pathname: '/**', // Add pathname if you want to allow all paths
+        pathname: '/**',
       },
     ],
   },

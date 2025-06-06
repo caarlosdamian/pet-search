@@ -21,9 +21,13 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { connectToDatabase } from '@/lib/mongodb';
-import PaginationControls from '@/components/pets/pagination-controls';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { ObjectId } from 'mongodb';
 import ApplicationFilters from '@/components/admin/application-filters';
+import PaginationControls from '@/components/pets/pagination-controls';
 import ApplicationsTableSkeleton from '@/components/admin/applications-table-skeleton';
+import { CustomSession } from '@/lib/types';
 
 export const metadata = {
   title: 'Manage Applications - PawFinder Admin',
@@ -35,6 +39,12 @@ export default async function AdminApplicationsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const session = await getServerSession(authOptions) as CustomSession;
+
+  if (!session || !['admin', 'org_admin'].includes(session.user.role)) {
+    return <div>Unauthorized</div>;
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -43,7 +53,9 @@ export default async function AdminApplicationsPage({
             Adoption Applications
           </h1>
           <p className="text-gray-600">
-            Review and manage pet adoption applications.
+            {session.user.role === 'org_admin'
+              ? "Review and manage your organization's adoption applications."
+              : 'Review and manage pet adoption applications across all organizations.'}
           </p>
         </div>
       </div>
@@ -59,7 +71,9 @@ export default async function AdminApplicationsPage({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ApplicationFilters />
+          <ApplicationFilters
+            showOrganizationFilter={session.user.role === 'admin'}
+          />
         </CardContent>
       </Card>
 
@@ -67,12 +81,17 @@ export default async function AdminApplicationsPage({
         <CardHeader>
           <CardTitle>Applications</CardTitle>
           <CardDescription>
-            All adoption applications submitted through the platform.
+            {session.user.role === 'org_admin'
+              ? "Applications for your organization's pets."
+              : 'All adoption applications submitted through the platform.'}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Suspense fallback={<ApplicationsTableSkeleton />}>
-            <ApplicationsTableWithData searchParams={searchParams} />
+            <ApplicationsTableWithData
+              searchParams={searchParams}
+              user={session.user}
+            />
           </Suspense>
         </CardContent>
       </Card>
@@ -82,11 +101,14 @@ export default async function AdminApplicationsPage({
 
 async function ApplicationsTableWithData({
   searchParams,
+  user,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
+  user: { id: string; role: string; organizationId?: string };
 }) {
   const { applications, totalPages, stats } = await getApplications(
-    searchParams
+    searchParams,
+    user
   );
 
   return (
@@ -124,6 +146,7 @@ async function ApplicationsTableWithData({
             <TableRow>
               <TableHead>Pet</TableHead>
               <TableHead>Applicant</TableHead>
+              {user.role === 'admin' && <TableHead>Organization</TableHead>}
               <TableHead>Status</TableHead>
               <TableHead>Submitted</TableHead>
               <TableHead>Last Updated</TableHead>
@@ -135,6 +158,7 @@ async function ApplicationsTableWithData({
               applications.map((application) => {
                 const pet = application.pet[0];
                 const user = application.user[0];
+                const organization = application.organization?.[0];
 
                 return (
                   <TableRow key={application._id.toString()}>
@@ -174,6 +198,13 @@ async function ApplicationsTableWithData({
                         </p>
                       </div>
                     </TableCell>
+                    {user.role === 'admin' && (
+                      <TableCell>
+                        <p className="text-sm">
+                          {organization?.name || 'Unknown'}
+                        </p>
+                      </TableCell>
+                    )}
                     <TableCell>
                       <Badge
                         variant="outline"
@@ -221,7 +252,10 @@ async function ApplicationsTableWithData({
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
+                <TableCell
+                  colSpan={user.role === 'admin' ? 7 : 6}
+                  className="h-24 text-center"
+                >
                   No applications found.
                 </TableCell>
               </TableRow>
@@ -240,22 +274,31 @@ async function ApplicationsTableWithData({
   );
 }
 
-async function getApplications(searchParams: {
-  [key: string]: string | string[] | undefined;
-}) {
+async function getApplications(
+  searchParams: { [key: string]: string | string[] | undefined },
+  user: { id: string; role: string; organizationId?: string }
+) {
   try {
     const { db } = await connectToDatabase();
 
     // Build query from search params
-    const query: Record<string, unknown> = {};
+    const query: Record<string, any> = {};
+
+    // Organization filtering based on user role
+    if (user.role === 'org_admin' && user.organizationId) {
+      query.organizationId = new ObjectId(user.organizationId);
+    } else if (
+      user.role === 'admin' &&
+      searchParams.organizationId &&
+      searchParams.organizationId !== 'all'
+    ) {
+      query.organizationId = new ObjectId(
+        searchParams.organizationId as string
+      );
+    }
 
     if (searchParams.status && searchParams.status !== 'all') {
       query.status = searchParams.status;
-    }
-
-    if (searchParams.petType && searchParams.petType !== 'all') {
-      // We'll need to join with pets collection to filter by pet type
-      // This will be handled in the aggregation pipeline
     }
 
     if (searchParams.dateRange) {
@@ -291,7 +334,7 @@ async function getApplications(searchParams: {
     const skip = (page - 1) * limit;
 
     // Build aggregation pipeline
-    const pipeline: unknown[] = [
+    const pipeline: any[] = [
       { $match: query },
       {
         $lookup: {
@@ -307,6 +350,14 @@ async function getApplications(searchParams: {
           localField: 'userId',
           foreignField: '_id',
           as: 'user',
+        },
+      },
+      {
+        $lookup: {
+          from: 'organizations',
+          localField: 'organizationId',
+          foreignField: '_id',
+          as: 'organization',
         },
       },
     ];
@@ -340,6 +391,12 @@ async function getApplications(searchParams: {
                 $options: 'i',
               },
             },
+            {
+              'organization.name': {
+                $regex: searchParams.search,
+                $options: 'i',
+              },
+            },
           ],
         },
       });
@@ -352,7 +409,7 @@ async function getApplications(searchParams: {
     const countPipeline = [...pipeline, { $count: 'total' }];
     const countResult = await db
       .collection('applications')
-      .aggregate(countPipeline as Document[])
+      .aggregate(countPipeline)
       .toArray();
     const totalApplications = countResult[0]?.total || 0;
     const totalPages = Math.ceil(totalApplications / limit);
@@ -366,10 +423,16 @@ async function getApplications(searchParams: {
       .aggregate(pipeline as Document[])
       .toArray();
 
-    // Get stats
+    // Get stats with organization filtering
+    const statsQuery =
+      user.role === 'org_admin' && user.organizationId
+        ? { organizationId: new ObjectId(user.organizationId) }
+        : {};
+
     const stats = await db
       .collection('applications')
       .aggregate([
+        { $match: statsQuery },
         {
           $group: {
             _id: '$status',

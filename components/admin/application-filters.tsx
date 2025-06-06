@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-export default function ApplicationFilters() {
+interface ApplicationFiltersProps {
+  showOrganizationFilter?: boolean
+}
+
+export default function ApplicationFilters({ showOrganizationFilter = false }: ApplicationFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -15,7 +19,29 @@ export default function ApplicationFilters() {
     status: searchParams.get("status") || "all",
     petType: searchParams.get("petType") || "all",
     dateRange: searchParams.get("dateRange") || "all",
+    organizationId: searchParams.get("organizationId") || "all",
   })
+
+  const [organizations, setOrganizations] = useState<Array<{ id: string; name: string }>>([])
+
+  // Fetch organizations for super admin filter
+  useEffect(() => {
+    if (showOrganizationFilter) {
+      fetchOrganizations()
+    }
+  }, [showOrganizationFilter])
+
+  const fetchOrganizations = async () => {
+    try {
+      const response = await fetch("/api/organizations")
+      if (response.ok) {
+        const data = await response.json()
+        setOrganizations(data)
+      }
+    } catch (error) {
+      console.error("Error fetching organizations:", error)
+    }
+  }
 
   // Update filters when URL changes
   useEffect(() => {
@@ -24,6 +50,7 @@ export default function ApplicationFilters() {
       status: searchParams.get("status") || "all",
       petType: searchParams.get("petType") || "all",
       dateRange: searchParams.get("dateRange") || "all",
+      organizationId: searchParams.get("organizationId") || "all",
     })
   }, [searchParams])
 
@@ -38,6 +65,9 @@ export default function ApplicationFilters() {
     if (filters.status !== "all") params.set("status", filters.status)
     if (filters.petType !== "all") params.set("petType", filters.petType)
     if (filters.dateRange !== "all") params.set("dateRange", filters.dateRange)
+    if (showOrganizationFilter && filters.organizationId !== "all") {
+      params.set("organizationId", filters.organizationId)
+    }
 
     // Reset to page 1 when filters change
     params.set("page", "1")
@@ -51,6 +81,7 @@ export default function ApplicationFilters() {
       status: "all",
       petType: "all",
       dateRange: "all",
+      organizationId: "all",
     })
 
     router.push("/admin/applications")
@@ -58,7 +89,9 @@ export default function ApplicationFilters() {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div
+        className={`grid grid-cols-1 gap-4 ${showOrganizationFilter ? "sm:grid-cols-2 lg:grid-cols-5" : "sm:grid-cols-2 lg:grid-cols-4"}`}
+      >
         <div>
           <Input
             placeholder="Search applications..."
@@ -104,6 +137,22 @@ export default function ApplicationFilters() {
             <SelectItem value="month">This Month</SelectItem>
           </SelectContent>
         </Select>
+
+        {showOrganizationFilter && (
+          <Select value={filters.organizationId} onValueChange={(value) => handleChange("organizationId", value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Organization" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Organizations</SelectItem>
+              {organizations.map((org) => (
+                <SelectItem key={org.id} value={org.id}>
+                  {org.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       <div className="flex gap-2">

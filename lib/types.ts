@@ -1,6 +1,29 @@
+export interface Organization {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
+  email: string;
+  website?: string;
+  logo?: string;
+  settings: {
+    allowPublicApplications: boolean;
+    requireApproval: boolean;
+    autoEmailResponses: boolean;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Pet {
   id: string;
   _id: string;
+  organizationId: string;
   name: string;
   type: string;
   breed: string;
@@ -22,6 +45,7 @@ export interface Pet {
   healthDetails: string;
   adoptionRequirements: string;
   adoptionFee: number;
+  adopted?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -42,6 +66,7 @@ export interface AdoptionApplication {
   id: string;
   petId: string;
   userId: string;
+  organizationId: string;
   status: 'pending' | 'approved' | 'rejected';
   personalInfo: {
     name: string;
@@ -74,7 +99,8 @@ export interface CustomUser {
   name: string;
   email: string;
   image?: string | null;
-  role: 'admin' | 'user' | 'moderator'; // if you have specific roles
+  organizationId?: string;
+  role: 'admin' | 'user' | 'moderator' | 'org_admin'; // if you have specific roles
   favorites: string[]; // assuming IDs
   applications: ApplicationItem[]; // if you have a specific structure
 }
