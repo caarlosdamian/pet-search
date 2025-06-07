@@ -133,9 +133,9 @@ export default function LoginForm() {
                     tabIndex={-1}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-4 w-4 cursor-pointer" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-4 w-4 cursor-pointer" />
                     )}
                     <span className="sr-only">
                       {showPassword ? 'Hide password' : 'Show password'}

@@ -5,7 +5,6 @@ import { getServerSession } from 'next-auth';
 import LoginForm from '@/components/auth/login-form';
 import { authOptions } from '@/lib/auth';
 
-
 export const metadata: Metadata = {
   title: 'Login - PawFinder',
   description:
@@ -46,7 +45,7 @@ export default async function LoginPage({
 
         <LoginForm />
 
-        <div className="relative">
+        {/* <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
           </div>
@@ -55,9 +54,9 @@ export default async function LoginPage({
               Or continue with
             </span>
           </div>
-        </div>
+        </div> */}
 
-        <div className="grid grid-cols-2 gap-3">
+        {/* <div className="grid grid-cols-2 gap-3">
           <Link
             href="/api/auth/signin/google"
             className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
@@ -96,7 +95,7 @@ export default async function LoginPage({
             </svg>
             GitHub
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ import { connectToDatabase } from '@/lib/mongodb';
 
 export async function POST(request: Request) {
   try {
-    console.log('Entrando singoup')
     const { name, email, password } = await request.json();
 
     // Validate input

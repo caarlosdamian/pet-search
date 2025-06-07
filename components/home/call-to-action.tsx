@@ -16,7 +16,7 @@ export default function CallToAction() {
             <Button asChild size="lg" className="bg-white text-rose-600 hover:bg-rose-50">
               <Link href="/pets">Find a Pet</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="text-white border-white hover:bg-rose-500">
+            <Button asChild variant="outline" size="lg" className="hover:text-white border-white hover:bg-rose-500">
               <Link href="/about">Learn More</Link>
             </Button>
           </div>

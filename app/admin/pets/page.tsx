@@ -16,6 +16,9 @@ import PaginationControls from '@/components/pets/pagination-controls';
 import PetFilters from '@/components/admin/pet-filters';
 import { getPets } from '@/services/pets';
 import { PetDelete } from '@/components/admin/pet-delete';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { CustomSession } from '@/lib/types';
 export const metadata = {
   title: 'Manage Pets - PawFinder Admin',
   description: 'Add, edit, and manage pets on the PawFinder platform.',
@@ -26,8 +29,12 @@ export default async function AdminPetsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const params = await searchParams
-  const { pets, totalPages } = await getPets(params);
+  const params = await searchParams;
+  const session = (await getServerSession(authOptions)) as CustomSession;
+  const { pets, totalPages } = await getPets({
+    ...params,
+    organization: session.user.organizationId,
+  });
 
   return (
     <div className="space-y-6 bg-gray-100">
@@ -121,7 +128,9 @@ export default async function AdminPetsPage({
                         >
                           View
                         </Link>
-                        <PetDelete id={pet._id.toString() as unknown as string || ''} />
+                        <PetDelete
+                          id={(pet._id.toString() as unknown as string) || ''}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>

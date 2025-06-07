@@ -32,6 +32,7 @@ export const petFormSchema = z.object({
   adoptionFee: z.coerce
     .number()
     .min(0, 'Adoption fee must be a positive number'),
+  organizationId: z.string().min(1, 'Organization is required').optional(),
 });
 
 export const adoptionFormSchema = z.object({

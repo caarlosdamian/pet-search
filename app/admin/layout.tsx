@@ -4,8 +4,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { CustomSession } from '@/lib/types';
 import AdminSidebar from '@/components/admin/admin-sidebar';
-import { connectToDatabase } from '@/lib/mongodb';
-import { ObjectId } from 'mongodb';
+
+import { getOrganization } from '@/lib/actions';
 
 export const metadata = {
   title: 'Admin Dashboard - PawFinder',
@@ -22,7 +22,10 @@ export default async function AdminLayout({
 
   const adminRoles = ['org_admin', 'admin'];
 
-  if (!session || !adminRoles.some((role) => session.user.role.includes(role))) {
+  if (
+    !session ||
+    !adminRoles.some((role) => session.user.role.includes(role))
+  ) {
     redirect('/login?callbackUrl=/admin');
   }
 
@@ -34,8 +37,16 @@ export default async function AdminLayout({
   return (
     <div className="flex min-h-screen bg-gray-100 w-full">
       <div className="flex gap-4 p-6 w-full">
-        {/* <AdminSidebar /> */}
-        <AdminSidebar user={session.user} organization={organization} />
+        <AdminSidebar
+          user={session.user}
+          organization={
+            JSON.stringify(organization) as unknown as {
+              id: string;
+              name: string;
+              logo?: string;
+            }
+          }
+        />
         <div className="flex-1">{children}</div>
       </div>
     </div>
@@ -43,22 +54,3 @@ export default async function AdminLayout({
 }
 
 ///
-
-async function getOrganization(organizationId: string) {
-  try {
-    const { db } = await connectToDatabase();
-    const organization = await db.collection('organizations').findOne({
-      _id: new ObjectId(organizationId),
-    });
-
-    if (!organization) return null;
-
-    return {
-      ...organization,
-      id: organization._id.toString(),
-    };
-  } catch (error) {
-    console.error('Error fetching organization:', error);
-    return null;
-  }
-}

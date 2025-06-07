@@ -17,9 +17,9 @@ import {
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Find Pets', href: '/pets' },
-  { name: 'About Us', href: '/about' },
-  { name: 'Pet Care', href: '/pet-care' },
-  { name: 'Contact', href: '/contact' },
+  // { name: 'About Us', href: '/about' },
+  // { name: 'Pet Care', href: '/pet-care' },
+  // { name: 'Contact', href: '/contact' },
 ];
 
 export default function Header() {
@@ -174,7 +174,7 @@ export default function Header() {
                   ))}
                 </div>
                 <div className="py-6">
-                  {true ? (
+                  {session ? (
                     <>
                       <Link
                         href="/dashboard"

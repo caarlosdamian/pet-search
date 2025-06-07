@@ -1,34 +1,44 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { PlaceSelect } from '../ui/placeSelect';
 
 export default function SearchBar() {
-  const router = useRouter()
-  const [petType, setPetType] = useState("")
-  const [location, setLocation] = useState("")
+  const router = useRouter();
+  const [petType, setPetType] = useState('');
+  const [location, setLocation] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Build query string
-    const params = new URLSearchParams()
-    if (petType) params.append("type", petType)
-    if (location) params.append("location", location)
+    const params = new URLSearchParams();
+    if (petType) params.append('type', petType);
+    if (location) params.append('location', location);
 
     // Navigate to pets page with filters
-    router.push(`/pets?${params.toString()}`)
-  }
+    router.push(`/pets?${params.toString()}`);
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto max-w-2xl rounded-xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5">
-        <form onSubmit={handleSearch} className="flex flex-col gap-4 sm:flex-row">
+        <form
+          onSubmit={handleSearch}
+          className="flex flex-col gap-4 sm:flex-row"
+        >
           <div className="flex-1">
             <Select value={petType} onValueChange={setPetType}>
               <SelectTrigger className="w-full">
@@ -50,11 +60,7 @@ export default function SearchBar() {
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="new-york">New York</SelectItem>
-                <SelectItem value="los-angeles">Los Angeles</SelectItem>
-                <SelectItem value="chicago">Chicago</SelectItem>
-                <SelectItem value="houston">Houston</SelectItem>
-                <SelectItem value="phoenix">Phoenix</SelectItem>
+                <PlaceSelect />
               </SelectContent>
             </Select>
           </div>
@@ -66,5 +72,5 @@ export default function SearchBar() {
         </form>
       </div>
     </div>
-  )
+  );
 }

@@ -23,7 +23,6 @@ export async function GET(request: Request) {
       type,
       _id: { $ne: new ObjectId(id) },
     };
-    console.log('query', query);
     if (breed) {
       query.breed = breed;
     }

@@ -80,7 +80,6 @@ export default function SignupForm() {
       password: data.password,
     });
 
-    console.log('Body:', body);
 
     try {
       // Create account using our custom API endpoint

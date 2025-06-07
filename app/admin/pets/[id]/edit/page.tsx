@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 export default async function EditPetPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await params;
   const pet = await getPet(id);
 
   return (

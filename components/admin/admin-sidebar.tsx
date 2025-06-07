@@ -51,6 +51,7 @@ export default function AdminSidebar({
   };
 
   const isSuperAdmin = user.role === 'admin';
+  const organizationData = organization ? JSON.parse(organization as unknown as string) : {};
 
   return (
     <SidebarProvider defaultOpen className="">
@@ -60,9 +61,9 @@ export default function AdminSidebar({
             <PawPrint className="h-6 w-6 text-rose-600" />
             <div className="flex flex-col">
               <span className="text-xl font-bold">PawFinder Admin</span>
-              {organization && (
+              {organizationData && (
                 <span className="text-xs text-gray-500">
-                  {organization.name}
+                  {organizationData?.name}
                 </span>
               )}
             </div>

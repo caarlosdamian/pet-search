@@ -46,7 +46,7 @@ export default async function SignupPage({
 
         <SignupForm />
 
-        <div className="relative">
+        {/* <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
           </div>
@@ -96,7 +96,7 @@ export default async function SignupPage({
             </svg>
             GitHub
           </Link>
-        </div>
+        </div> */}
 
         <p className="text-center text-xs text-gray-500">
           By signing up, you agree to our{' '}

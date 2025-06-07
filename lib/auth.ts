@@ -39,8 +39,9 @@ export const authOptions: NextAuthOptions = {
           return {
             email: existingUser.email,
             id: existingUser._id.toString(),
-            organizationId: user.organizationId?.toString(),
+            organizationId: existingUser.organizationId?.toString(),
             ...existingUser,
+            user: existingUser,
           };
         }
         return null;

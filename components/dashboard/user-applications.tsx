@@ -15,7 +15,6 @@ import { ObjectId } from 'mongodb';
 export default async function UserApplications({ userId }: { userId: string }) {
   const applications = await getUserApplications(userId);
 
-  console.log('applications', applications);
 
   if (applications.length === 0) {
     return (

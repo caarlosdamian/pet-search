@@ -3,22 +3,8 @@ import Link from "next/link"
 import { formatDistanceToNow } from "date-fns"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { Adoption } from "@/lib/types"
 
-interface Adoption {
-  _id: string
-  status: string
-  updatedAt: string
-  pet: {
-    name: string
-    type: string
-    breed: string
-    imageUrl: string
-  }[]
-  user: {
-    name: string
-    email: string
-  }[]
-}
 
 export default function RecentAdoptionsTable({ adoptions }: { adoptions: Adoption[] }) {
   if (!adoptions || adoptions.length === 0) {

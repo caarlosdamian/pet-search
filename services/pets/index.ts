@@ -1,6 +1,7 @@
 'use server';
 import { connectToDatabase } from '@/lib/mongodb';
 import { Pet } from '@/lib/types';
+import { ObjectId } from 'mongodb';
 import { revalidatePath } from 'next/cache';
 
 export async function getPet(id: string): Promise<Pet | null> {
@@ -59,7 +60,6 @@ export async function getPets(searchParams: {
   try {
     const { db } = await connectToDatabase();
 
-    // Build query from search params
     const query: Record<string, unknown> = {};
 
     if (searchParams.type) {
@@ -68,6 +68,10 @@ export async function getPets(searchParams: {
 
     if (searchParams.location) {
       query.location = searchParams.location;
+    }
+
+    if (searchParams.organization) {
+      query.organizationId = new ObjectId(searchParams.organization as string);
     }
 
     if (searchParams.status === 'adopted') {

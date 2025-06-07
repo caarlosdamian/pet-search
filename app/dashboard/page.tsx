@@ -20,7 +20,7 @@ export default async function DashboardPage() {
   }
 
   // If user is admin, redirect to admin dashboard
-  if (session.user.role === 'admin') {
+  if (session.user.role === 'admin' || session.user.role === 'org_admin' ) {
     redirect('/admin');
   }
 

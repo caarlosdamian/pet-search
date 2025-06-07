@@ -1,5 +1,6 @@
 export interface Organization {
   id: string;
+  _id: string;
   name: string;
   slug: string;
   description: string;
@@ -114,4 +115,21 @@ interface ApplicationItem {
 export interface CustomSession {
   user: CustomUser;
   expires: string;
+}
+
+
+export interface Adoption {
+  _id: string
+  status: string
+  updatedAt: string
+  pet: {
+    name: string
+    type: string
+    breed: string
+    imageUrl: string
+  }[]
+  user: {
+    name: string
+    email: string
+  }[]
 }

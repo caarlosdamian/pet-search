@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { Loader2 } from 'lucide-react';
+import { Building2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -29,16 +29,38 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import ImageUploadField from './image-upload-field';
-import { Pet } from '@/lib/types';
+import { CustomSession, Pet } from '@/lib/types';
 import { petFormSchema, PetFormValues } from '@/lib/shemas';
+import { useSession } from 'next-auth/react';
+import { PlaceSelect } from '../ui/placeSelect';
 
 interface PetFormProps {
   pet?: Pet;
+  organizations?: string;
+  organizationName?: string;
 }
 
-export default function PetForm({ pet }: PetFormProps) {
+export default function PetForm({
+  pet,
+  organizations: organizationsData,
+  organizationName,
+}: PetFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: session } = useSession() as unknown as { data: CustomSession };
+  const organizations = organizationsData
+    ? JSON.parse(organizationsData)
+    : ([] as { id: string; name: string }[]);
+  const organizationData = useMemo(
+    () =>
+      organizationName
+        ? JSON.parse(organizationName as string)
+        : ({} as {
+            id: string;
+            name: string;
+          }),
+    [organizationName]
+  );
 
   const form = useForm({
     resolver: zodResolver(petFormSchema),
@@ -69,8 +91,15 @@ export default function PetForm({ pet }: PetFormProps) {
           healthDetails: '',
           adoptionRequirements: '',
           adoptionFee: 0,
+          organizationId: '',
         },
   });
+
+  useEffect(() => {
+    if (organizationData) {
+      form.setValue('organizationId', organizationData.id);
+    }
+  }, [organizationData, form]);
 
   async function onSubmit(data: PetFormValues) {
     setIsSubmitting(true);
@@ -81,7 +110,6 @@ export default function PetForm({ pet }: PetFormProps) {
         createdAt: pet?.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-
 
       const url = pet ? `/api/pets/${pet._id}` : '/api/pets';
       const method = pet ? 'PATCH' : 'POST';
@@ -109,8 +137,6 @@ export default function PetForm({ pet }: PetFormProps) {
       setIsSubmitting(false);
     }
   }
-
-  console.log(form.watch());
 
   return (
     <Form {...form}>
@@ -155,13 +181,13 @@ export default function PetForm({ pet }: PetFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="dog">Dog</SelectItem>
-                        <SelectItem value="cat">Cat</SelectItem>
-                        <SelectItem value="bird">Bird</SelectItem>
+                        <SelectItem value="dog">Perro</SelectItem>
+                        <SelectItem value="cat">Gato</SelectItem>
+                        <SelectItem value="bird">Pájaro</SelectItem>
                         <SelectItem value="small-animal">
-                          Small Animal
+                          Animal pequeño
                         </SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="other">Otro</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -265,17 +291,60 @@ export default function PetForm({ pet }: PetFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="new-york">New York</SelectItem>
-                        <SelectItem value="los-angeles">Los Angeles</SelectItem>
-                        <SelectItem value="chicago">Chicago</SelectItem>
-                        <SelectItem value="houston">Houston</SelectItem>
-                        <SelectItem value="phoenix">Phoenix</SelectItem>
+                        <PlaceSelect />
                       </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              {session?.user.role === 'admin' && (
+                <FormField
+                  control={form.control}
+                  name="organizationId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Organization</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select organization" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {organizations?.map(
+                            (org: { id: string; name: string }) => (
+                              <SelectItem key={org.id} value={org.id}>
+                                {org.name}
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        The organization that will manage this pet.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {session?.user?.role === 'org_admin' &&
+                session.user.organizationId &&
+                !pet && (
+                  <div className="rounded-lg border p-4 bg-blue-50">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="h-4 w-4 text-blue-600" />
+                      <span className="text-sm font-medium text-blue-900">
+                        This pet will be assigned to: {organizationData.name}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
               <div className="md:col-span-2">
                 <FormField
@@ -349,7 +418,6 @@ export default function PetForm({ pet }: PetFormProps) {
                       <ImageUploadField
                         value={field.value || []}
                         onChange={(images) => {
-                          console.log('ESTE ES IMAGENES', images);
                           return field.onChange(images);
                         }}
                       />
