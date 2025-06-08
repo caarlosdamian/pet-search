@@ -2,7 +2,13 @@ import type { Pet } from '@/lib/types';
 import PetCard from './pet-card';
 import PaginationControls from './pagination-controls';
 
-export default function PetList({ pets }: { pets: Pet[] }) {
+export default function PetList({
+  pets,
+  totalPages,
+}: {
+  pets: Pet[];
+  totalPages: number;
+}) {
   return (
     <div>
       {pets.length > 0 ? (
@@ -13,7 +19,7 @@ export default function PetList({ pets }: { pets: Pet[] }) {
             ))}
           </div>
           <div className="mt-12">
-            <PaginationControls totalPages={10} />{' '}
+            <PaginationControls totalPages={totalPages} />{' '}
             {/* This would be dynamic in a real app */}
           </div>
         </>

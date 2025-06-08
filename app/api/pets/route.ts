@@ -3,12 +3,13 @@ import { getServerSession } from 'next-auth';
 import { connectToDatabase } from '@/lib/mongodb';
 import { authOptions } from '@/lib/auth';
 import { ObjectId } from 'mongodb';
+import { CustomSession } from '@/lib/types';
 
 // GET handler - fetch pets with filtering and pagination
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-
+    // console.log('SERCHPARAMS ',searchParams)
     // Extract filter parameters
     const type = searchParams.get('type');
     const location = searchParams.get('location');
@@ -22,7 +23,7 @@ export async function GET(request: Request) {
     const page = Number.parseInt(searchParams.get('page') || '1');
     const limit = Number.parseInt(searchParams.get('limit') || '12');
     const skip = (page - 1) * limit;
-
+    // console.log('TESTEANDO',page,'LIMIT',limit)
     // Build query
     const query: Record<string, unknown> = {};
 
@@ -62,11 +63,8 @@ export async function GET(request: Request) {
       ];
     }
 
-    // Connect to database
     const { db } = await connectToDatabase();
 
-    // filter adopted pending
-    // Get pets with pagination and organization info
     const pets = await db
       .collection('pets')
       .aggregate([
@@ -84,7 +82,7 @@ export async function GET(request: Request) {
         { $limit: limit },
       ])
       .toArray();
-    // Get total count for pagination
+
     const totalPets = await db.collection('pets').countDocuments(query);
     const totalPages = Math.ceil(totalPets / limit);
 
@@ -110,7 +108,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     // Check if user is authenticated and has admin privileges
-    const session = await getServerSession(authOptions);
+    const session = (await getServerSession(authOptions)) as CustomSession;
 
     if (!session || !['admin', 'org_admin'].includes(session.user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

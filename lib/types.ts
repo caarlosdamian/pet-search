@@ -117,19 +117,28 @@ export interface CustomSession {
   expires: string;
 }
 
-
 export interface Adoption {
-  _id: string
-  status: string
-  updatedAt: string
+  _id: string;
+  status: string;
+  updatedAt: string;
   pet: {
-    name: string
-    type: string
-    breed: string
-    imageUrl: string
-  }[]
+    name: string;
+    type: string;
+    breed: string;
+    imageUrl: string;
+  }[];
   user: {
-    name: string
-    email: string
-  }[]
+    name: string;
+    email: string;
+  }[];
+}
+
+export interface PetsAPI {
+  pets: Pet[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
 }

@@ -2,7 +2,8 @@ import { Suspense } from 'react';
 import PetFilters from '@/components/pets/pet-filters';
 import PetList from '@/components/pets/pet-list';
 import PetListSkeleton from '@/components/pets/pet-list-skeleton';
-import type { Pet } from '@/lib/types';
+import type { PetsAPI } from '@/lib/types';
+import { getPets } from '@/lib/actions/pets';
 
 export const metadata = {
   title: 'Find Pets - PawFinder',
@@ -49,58 +50,7 @@ async function PetListWithData({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const pets = (await getPets(searchParams)) as unknown as { pets: Pet[] };
+  const pets = (await getPets(searchParams)) as unknown as PetsAPI;
 
-  return <PetList pets={pets?.pets} />;
-}
-
-async function getPets(params: {
-  [key: string]: string | string[] | undefined;
-}): Promise<Pet[]> {
-  const searchParams = await params;
-  try {
-    // Build query string from search params
-    const queryParams = new URLSearchParams();
-
-    if (searchParams.type) {
-      queryParams.append('type', String(searchParams.type));
-    }
-
-    if (searchParams.location) {
-      queryParams.append('location', String(searchParams.location));
-    }
-
-    if (searchParams.age) {
-      queryParams.append('age', String(searchParams.age));
-    }
-
-    if (searchParams.gender) {
-      queryParams.append('gender', String(searchParams.gender));
-    }
-
-    if (searchParams.size) {
-      queryParams.append('size', String(searchParams.size));
-    }
-
-    // Add pagination
-    const page = 1;
-    queryParams.append('page', String(page));
-    queryParams.append('limit', '12');
-
-    const queryString = queryParams.toString();
-    const url = `${process.env.NEXT_PUBLIC_API_URL || ''}/api/pets${
-      queryString ? `?${queryString}` : ''
-    }`;
-
-    const response = await fetch(url, { next: { revalidate: 60 } });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch pets');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching pets:', error);
-    return [];
-  }
+  return <PetList pets={pets?.pets} totalPages={pets.pagination.totalPages} />;
 }
