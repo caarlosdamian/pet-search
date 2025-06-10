@@ -24,10 +24,12 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import ApplicationStatusActions from './application-status-actions';
+import { CustomUser } from '@/lib/types';
+import { ADMIN_ROLES } from '@/constants/user';
 
 interface ApplicationDetailsProps {
   applicationProp: string;
-  currentUser: Record<string, string>;
+  currentUser: CustomUser;
 }
 
 export default function ApplicationDetails({
@@ -38,7 +40,7 @@ export default function ApplicationDetails({
   const [status, setStatus] = useState(application.status);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const isAdmin = 'role' in currentUser ? currentUser?.role === 'admin' : '';
+  const isAdmin = ADMIN_ROLES.includes(currentUser.role);
   // const isOwner = applicationProp.userId === currentUser.id;
 
   const getStatusIcon = (status: string) => {

@@ -1,26 +1,33 @@
-import type { Pet } from '@/lib/types';
-import PetCard from './pet-card';
+import type { CustomSession, Pet } from '@/lib/types';
 import PaginationControls from './pagination-controls';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { getFavoritePets } from '@/lib/actions/pets';
+import { OptimisticPetsList } from './optimisticPetsList';
 
-export default function PetList({
+export default async function PetList({
   pets,
   totalPages,
 }: {
   pets: Pet[];
   totalPages: number;
 }) {
+  const session = (await getServerSession(
+    authOptions
+  )) as unknown as CustomSession;
+  const favoritePets = session
+    ? await getFavoritePets({ userId: session.user.id })
+    : [];
+
   return (
     <div>
       {pets.length > 0 ? (
         <>
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {pets.map((pet: Pet) => (
-              <PetCard key={pet._id} pet={pet} />
-            ))}
+            <OptimisticPetsList pets={pets} favoriteIds={favoritePets} />
           </div>
           <div className="mt-12">
             <PaginationControls totalPages={totalPages} />{' '}
-            {/* This would be dynamic in a real app */}
           </div>
         </>
       ) : (

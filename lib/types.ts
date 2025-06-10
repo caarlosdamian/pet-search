@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export interface Organization {
   id: string;
   _id: string;
@@ -141,4 +143,16 @@ export interface PetsAPI {
     limit: number;
     totalPages: number;
   };
+}
+
+export interface UserModel {
+  _id: ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  role: 'user' | 'admin' | 'org_admin';
+  favorites: ObjectId[];
+  applications: ObjectId[];
+  createdAt: Date;
+  updatedAt: Date;
 }

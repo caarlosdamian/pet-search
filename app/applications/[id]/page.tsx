@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { connectToDatabase } from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import ApplicationDetails from '@/components/applications/application-details';
+import { CustomSession } from '@/lib/types';
 
 export const metadata = {
   title: 'Application Details - PawFinder',
@@ -11,22 +12,22 @@ export const metadata = {
 };
 
 export default async function ApplicationPage({
-  params,
+  params: paramsData,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   // Check if user is authenticated
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as CustomSession;
+  const params = await paramsData;
 
   if (!session) {
     redirect(`/login?redirect=/applications/${params.id}`);
   }
 
-  // Fetch application data
   const application = await getApplication(
-    params.id,
-    session.user.id,
-    session.user.role
+    params?.id,
+    session.user?.id,
+    session.user?.role
   );
 
   if (!application) {
@@ -103,15 +104,16 @@ async function getApplication(id: string, userId: string, userRole: string) {
       ])
       .toArray();
 
+    console.log('TESTEANDIO', applications);
+
     const application = applications[0];
 
     if (!application) {
       return null;
     }
 
-    // Check if user has permission to view this application
     const isOwner = application.userId.toString() === userId;
-    const isAdmin = userRole === 'admin';
+    const isAdmin = userRole === 'admin' || userRole === 'org_admin';
 
     if (!isOwner && !isAdmin) {
       return null;

@@ -39,7 +39,7 @@ export default async function AdminApplicationsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const session = await getServerSession(authOptions) as CustomSession;
+  const session = (await getServerSession(authOptions)) as CustomSession;
 
   if (!session || !['admin', 'org_admin'].includes(session.user.role)) {
     return <div>Unauthorized</div>;
@@ -280,32 +280,31 @@ async function getApplications(
 ) {
   try {
     const { db } = await connectToDatabase();
+    const params = await searchParams;
 
     // Build query from search params
-    const query: Record<string, any> = {};
+    const query: Record<string, unknown> = {};
 
     // Organization filtering based on user role
     if (user.role === 'org_admin' && user.organizationId) {
       query.organizationId = new ObjectId(user.organizationId);
     } else if (
       user.role === 'admin' &&
-      searchParams.organizationId &&
-      searchParams.organizationId !== 'all'
+      params.organizationId &&
+      params.organizationId !== 'all'
     ) {
-      query.organizationId = new ObjectId(
-        searchParams.organizationId as string
-      );
+      query.organizationId = new ObjectId(params.organizationId as string);
     }
 
-    if (searchParams.status && searchParams.status !== 'all') {
-      query.status = searchParams.status;
+    if (params.status && params.status !== 'all') {
+      query.status = params.status;
     }
 
-    if (searchParams.dateRange) {
+    if (params.dateRange) {
       const now = new Date();
       let startDate: Date;
 
-      switch (searchParams.dateRange) {
+      switch (params.dateRange) {
         case 'today':
           startDate = new Date(
             now.getFullYear(),
@@ -323,18 +322,18 @@ async function getApplications(
           startDate = new Date(0); // All time
       }
 
-      if (searchParams.dateRange !== 'all') {
+      if (params.dateRange !== 'all') {
         query.createdAt = { $gte: startDate.toISOString() };
       }
     }
 
     // Pagination
-    const page = Number(searchParams.page) || 1;
+    const page = Number(params.page) || 1;
     const limit = 20;
     const skip = (page - 1) * limit;
 
     // Build aggregation pipeline
-    const pipeline: any[] = [
+    const pipeline: unknown[] = [
       { $match: query },
       {
         $lookup: {
@@ -363,37 +362,37 @@ async function getApplications(
     ];
 
     // Add pet type filter if specified
-    if (searchParams.petType && searchParams.petType !== 'all') {
+    if (params.petType && params.petType !== 'all') {
       pipeline.push({
         $match: {
-          'pet.type': searchParams.petType,
+          'pet.type': params.petType,
         },
       });
     }
 
     // Add search filter if specified
-    if (searchParams.search) {
+    if (params.search) {
       pipeline.push({
         $match: {
           $or: [
-            { 'pet.name': { $regex: searchParams.search, $options: 'i' } },
-            { 'user.name': { $regex: searchParams.search, $options: 'i' } },
-            { 'user.email': { $regex: searchParams.search, $options: 'i' } },
+            { 'pet.name': { $regex: params.search, $options: 'i' } },
+            { 'user.name': { $regex: params.search, $options: 'i' } },
+            { 'user.email': { $regex: params.search, $options: 'i' } },
             {
               'personalInfo.name': {
-                $regex: searchParams.search,
+                $regex: params.search,
                 $options: 'i',
               },
             },
             {
               'personalInfo.email': {
-                $regex: searchParams.search,
+                $regex: params.search,
                 $options: 'i',
               },
             },
             {
               'organization.name': {
-                $regex: searchParams.search,
+                $regex: params.search,
                 $options: 'i',
               },
             },
@@ -409,7 +408,7 @@ async function getApplications(
     const countPipeline = [...pipeline, { $count: 'total' }];
     const countResult = await db
       .collection('applications')
-      .aggregate(countPipeline)
+      .aggregate(countPipeline as Document[])
       .toArray();
     const totalApplications = countResult[0]?.total || 0;
     const totalPages = Math.ceil(totalApplications / limit);
