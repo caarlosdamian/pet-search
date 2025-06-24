@@ -12,23 +12,22 @@ export default function Hero() {
               <div className="mt-24 sm:mt-32 lg:mt-16">
                 <div className="inline-flex space-x-6">
                   <span className="rounded-full bg-rose-600/10 px-3 py-1 text-sm font-semibold leading-6 text-rose-600 ring-1 ring-inset ring-rose-600/10">
-                    Find Your New Best Friend
+                    Encuentra a tu nuevo mejor amigo
                   </span>
                 </div>
               </div>
               <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Give a pet a loving home
+                Dale un hogar lleno de amor a una mascota
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
-                Thousands of adorable pets are waiting for their forever homes. Browse our available pets and find your
-                perfect companion today.
+                Miles de mascotas adorables están esperando un hogar para siempre. Explora nuestras mascotas disponibles y encuentra hoy a tu compañero ideal.
               </p>
               <div className="mt-10 flex items-center gap-x-6">
                 <Button asChild size="lg" className="bg-rose-600 hover:bg-rose-500">
-                  <Link href="/pets">Find a Pet</Link>
+                  <Link href="/pets">Buscar una mascota</Link>
                 </Button>
                 <Link href="/about" className="text-sm font-semibold leading-6 text-gray-900">
-                  Learn more <span aria-hidden="true">→</span>
+                  Saber más <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </div>
@@ -38,7 +37,7 @@ export default function Hero() {
           <div className="relative overflow-hidden rounded-xl shadow-xl">
             <Image
               src="https://images.unsplash.com/photo-1663855552769-9d1de123f397?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Happy dog with owner"
+              alt="Perro feliz con su dueño"
               width={1200}
               height={800}
               className="w-full h-full object-cover"

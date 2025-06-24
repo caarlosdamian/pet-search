@@ -42,14 +42,14 @@ export default function SearchBar() {
           <div className="flex-1">
             <Select value={petType} onValueChange={setPetType}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Pet Type" />
+                <SelectValue placeholder="Tipo de mascota" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="dog">Dogs</SelectItem>
-                <SelectItem value="cat">Cats</SelectItem>
-                <SelectItem value="bird">Birds</SelectItem>
-                <SelectItem value="small-animal">Small Animals</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                <SelectItem value="dog">Perros</SelectItem>
+                <SelectItem value="cat">Gatos</SelectItem>
+                <SelectItem value="bird">Aves</SelectItem>
+                <SelectItem value="small-animal">Animales pequeños</SelectItem>
+                <SelectItem value="other">Otros</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -57,7 +57,7 @@ export default function SearchBar() {
           <div className="flex-1">
             <Select value={location} onValueChange={setLocation}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Location" />
+                <SelectValue placeholder="Ubicación" />
               </SelectTrigger>
               <SelectContent>
                 <PlaceSelect />
@@ -67,7 +67,7 @@ export default function SearchBar() {
 
           <Button type="submit" className="bg-rose-600 hover:bg-rose-500">
             <Search className="mr-2 h-4 w-4" />
-            Search
+            Buscar
           </Button>
         </form>
       </div>

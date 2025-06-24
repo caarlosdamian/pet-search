@@ -15,11 +15,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Find Pets', href: '/pets' },
-  // { name: 'About Us', href: '/about' },
-  // { name: 'Pet Care', href: '/pet-care' },
-  // { name: 'Contact', href: '/contact' },
+  { name: 'Inicio', href: '/' },
+  { name: 'Buscar Mascotas', href: '/pets' },
+  // { name: 'Sobre Nosotros', href: '/about' },
+  // { name: 'Cuidado de Mascotas', href: '/pet-care' },
+  // { name: 'Contacto', href: '/contact' },
 ];
 
 export default function Header() {
@@ -28,7 +28,7 @@ export default function Header() {
   const { data: session, status } = useSession();
 
   if (status === 'loading') {
-    return null; // Or return consistent markup
+    return null;
   }
 
   return (
@@ -53,7 +53,7 @@ export default function Header() {
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
             onClick={() => setMobileMenuOpen(true)}
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only">Abrir menú principal</span>
             <Menu className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
@@ -94,22 +94,22 @@ export default function Header() {
                 <DropdownMenuItem asChild>
                   <Link href="/dashboard" className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
-                    <span>Dashboard</span>
+                    <span>Panel</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
+                {/* <DropdownMenuItem asChild>
                   <Link href="/favorites" className="cursor-pointer">
                     <Heart className="mr-2 h-4 w-4" />
-                    <span>Favorites</span>
+                    <span>Favoritos</span>
                   </Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="cursor-pointer"
                   onClick={() => signOut({ callbackUrl: '/' })}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
+                  <span>Cerrar sesión</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -119,20 +119,20 @@ export default function Header() {
                 href="/login"
                 className="text-sm font-semibold leading-6 text-gray-900 hover:text-rose-600"
               >
-                Log in
+                Iniciar sesión
               </Link>
               <Link
                 href="/signup"
-                className="rounded-md bg-rose-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+                className="rounded-md bg-rose-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
               >
-                Sign up
+                Crear cuenta
               </Link>
             </div>
           )}
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Menú móvil */}
       {mobileMenuOpen && (
         <div className="lg:hidden">
           <div className="fixed inset-0 z-50" />
@@ -151,7 +151,7 @@ export default function Header() {
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span className="sr-only">Close menu</span>
+                <span className="sr-only">Cerrar menú</span>
                 <X className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
@@ -181,7 +181,7 @@ export default function Header() {
                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        Dashboard
+                        Panel
                       </Link>
                       <button
                         onClick={() => {
@@ -190,7 +190,7 @@ export default function Header() {
                         }}
                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                       >
-                        Log out
+                        Cerrar sesión
                       </button>
                     </>
                   ) : (
@@ -200,14 +200,14 @@ export default function Header() {
                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        Log in
+                        Iniciar sesión
                       </Link>
                       <Link
                         href="/signup"
                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        Sign up
+                        Crear cuenta
                       </Link>
                     </>
                   )}

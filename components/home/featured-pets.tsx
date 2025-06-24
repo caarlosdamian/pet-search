@@ -17,10 +17,10 @@ export default async function FeaturedPets({ pets }: { pets: Pet[] }) {
     <section className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Meet Our Pets
+          Conoce a Nuestras Mascotas
         </h2>
         <p className="mt-2 text-lg leading-8 text-gray-600">
-          These adorable companions are looking for their forever homes.
+          Estos adorables compañeros están buscando un hogar para siempre.
         </p>
       </div>
 
@@ -31,14 +31,14 @@ export default async function FeaturedPets({ pets }: { pets: Pet[] }) {
       ) : (
         <div className="mt-10 text-center">
           <p className="text-gray-500">
-            No featured pets available at the moment.
+            No hay mascotas destacadas disponibles en este momento.
           </p>
         </div>
       )}
 
       <div className="mt-10 text-center">
         <Button asChild variant="outline" size="lg">
-          <Link href="/pets">View All Pets</Link>
+          <Link href="/pets">Ver Todas las Mascotas</Link>
         </Button>
       </div>
     </section>

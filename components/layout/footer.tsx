@@ -20,38 +20,38 @@ export default function Footer() {
           </Link>
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
-          <div className="flex flex-col md:flex-row md:gap-8 mb-8">
+          {/* <div className="flex flex-col md:flex-row md:gap-8 mb-8">
             <div className="mb-8 md:mb-0">
-              <h3 className="text-sm font-semibold leading-6 text-white">About</h3>
+              <h3 className="text-sm font-semibold leading-6 text-white">Acerca de</h3>
               <ul className="mt-6 space-y-4">
                 <li>
                   <Link href="/about" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    Our Mission
+                    Nuestra Misión
                   </Link>
                 </li>
                 <li>
                   <Link href="/about/team" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    Our Team
+                    Nuestro Equipo
                   </Link>
                 </li>
                 <li>
                   <Link href="/about/locations" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    Locations
+                    Ubicaciones
                   </Link>
                 </li>
               </ul>
             </div>
             <div className="mb-8 md:mb-0">
-              <h3 className="text-sm font-semibold leading-6 text-white">Resources</h3>
+              <h3 className="text-sm font-semibold leading-6 text-white">Recursos</h3>
               <ul className="mt-6 space-y-4">
                 <li>
                   <Link href="/pet-care" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    Pet Care Guides
+                    Guías de Cuidado de Mascotas
                   </Link>
                 </li>
                 <li>
                   <Link href="/faq" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    FAQs
+                    Preguntas Frecuentes
                   </Link>
                 </li>
                 <li>
@@ -66,19 +66,19 @@ export default function Footer() {
               <ul className="mt-6 space-y-4">
                 <li>
                   <Link href="/privacy" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    Privacy Policy
+                    Política de Privacidad
                   </Link>
                 </li>
                 <li>
                   <Link href="/terms" className="text-sm leading-6 text-gray-300 hover:text-white">
-                    Terms of Service
+                    Términos del Servicio
                   </Link>
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
           <p className="text-center text-xs leading-5 text-gray-400">
-            &copy; {new Date().getFullYear()} PawFinder. All rights reserved.
+            &copy; {new Date().getFullYear()} PawFinder. Todos los derechos reservados.
           </p>
         </div>
       </div>

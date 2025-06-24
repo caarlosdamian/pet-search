@@ -139,3 +139,24 @@ export async function getPets(params: {
     return [];
   }
 }
+
+
+export async function getFeaturedPets() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL || ''}/api/pets/featured`,
+      {
+        next: { revalidate: 3600 }, // Revalidate every hour
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch featured pets');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching featured pets:', error);
+    return [];
+  }
+}
