@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
 // Define form schema with Zod
+export const userFormSchema = z.object({
+  name: z.string().min(1, 'Campo Obligatiorio'),
+  emai: z.string().min(1, 'Campo Obligatiorio'),
+  role: z.string().min(1, 'Campo Obligatiorio'),
+});
+
 export const petFormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   type: z.string().min(1, 'Type is required'),
@@ -77,4 +83,5 @@ export const adoptionFormSchema = z.object({
 });
 
 export type PetFormValues = z.infer<typeof petFormSchema>;
+export type UserFormValues = z.infer<typeof userFormSchema>;
 export type AdoptionFormValues = z.infer<typeof adoptionFormSchema>;

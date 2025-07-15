@@ -15,7 +15,6 @@ import {
 import type { Pet } from "@/lib/types"
 
 export default function AdoptionCTA({ pet }: { pet: Pet }) {
-  // const { data: session } = useSession()
   const [dialogOpen, setDialogOpen] = useState(false)
 
   return (

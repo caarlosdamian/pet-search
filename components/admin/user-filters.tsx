@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select';
 import { PlaceSelect } from '../ui/placeSelect';
 
-export default function PetFilters() {
+export default function UserFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -23,7 +23,7 @@ export default function PetFilters() {
     location: searchParams.get('location') || '',
     status: searchParams.get('status') || '',
   });
-
+  // TODO: change tu user fulters
   // Update filters when URL changes
   useEffect(() => {
     setFilters({
