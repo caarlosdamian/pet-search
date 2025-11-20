@@ -160,3 +160,15 @@ export async function getFeaturedPets() {
     return [];
   }
 }
+
+export async function createPet(petData: Omit<Pet, 'id' | '_id'>) {
+  try {
+    const { db } = await connectToDatabase();
+    const result = await db.collection('pets').insertOne(petData);
+    revalidatePath('/');
+    return { success: true, id: result.insertedId.toString() };
+  } catch (error) {
+    console.error('Error creating pet:', error);
+    return { success: false, error };
+  }
+}

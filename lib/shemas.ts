@@ -3,7 +3,7 @@ import { z } from 'zod';
 // Define form schema with Zod
 export const userFormSchema = z.object({
   name: z.string().min(1, 'Campo Obligatiorio'),
-  emai: z.string().min(1, 'Campo Obligatiorio'),
+  email: z.string().min(1, 'Campo Obligatiorio'),
   role: z.string().min(1, 'Campo Obligatiorio'),
 });
 

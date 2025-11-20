@@ -10,7 +10,7 @@ export default function Hero() {
           <div className="mx-auto max-w-2xl">
             <div className="max-w-lg">
               <div className="mt-24 sm:mt-32 lg:mt-16">
-                <div className="inline-flex space-x-6">
+                <div className="space-x-6">
                   <span className="rounded-full bg-rose-600/10 px-3 py-1 text-sm font-semibold leading-6 text-rose-600 ring-1 ring-inset ring-rose-600/10">
                     Encuentra a tu nuevo mejor amigo
                   </span>

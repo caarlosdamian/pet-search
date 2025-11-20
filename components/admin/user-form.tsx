@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -27,6 +27,8 @@ import {
 import { CustomSession, User } from '@/lib/types';
 import { userFormSchema, UserFormValues } from '@/lib/shemas';
 import { useSession } from 'next-auth/react';
+import { createUser, updateUser } from '@/services/users';
+import { toast } from 'sonner';
 
 interface PetFormProps {
   user?: User;
@@ -36,9 +38,7 @@ export default function UserForm({ user }: PetFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session } = useSession() as unknown as { data: CustomSession };
-
-  console.log(session);
-
+console.log(user)
   const form = useForm({
     resolver: zodResolver(userFormSchema),
     values: user
@@ -52,6 +52,12 @@ export default function UserForm({ user }: PetFormProps) {
         },
   });
 
+  useEffect(() => {
+    form.reset({
+      ...JSON.parse(user as unknown as string),
+    });
+  }, [user, form]);
+
   async function onSubmit(data: UserFormValues) {
     setIsSubmitting(true);
     try {
@@ -60,25 +66,18 @@ export default function UserForm({ user }: PetFormProps) {
         createdAt: user?.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      console.log(userData)
-      // const url = user ? `/api/pets/${user._id}` : '/api/user';
-      // const method = pet ? 'PATCH' : 'POST';
-      // const response = await fetch(url, {
-      //   method,
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(petData),
-      // });
-      // if (!response.ok) {
-      //   throw new Error('Failed to save pet');
-      // }
-      // toast(pet ? 'Pet updated' : 'Pet created');
-      // router.push('/admin/pets');
+      if (user) {
+        await updateUser({ ...userData, _id: user._id });
+      } else {
+        await createUser(userData);
+      }
+
+      toast(user ? 'User updated' : 'User created');
+      router.push('/admin/users');
       router.refresh();
     } catch (error) {
-      console.error('Error saving pet:', error);
-      // toast('Error');
+      console.error('Error saving user:', error);
+      toast('Error');
     } finally {
       setIsSubmitting(false);
     }
@@ -128,7 +127,7 @@ export default function UserForm({ user }: PetFormProps) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {session.user.role === 'admin' && (
+                  {session?.user?.role === 'admin' && (
                     <SelectItem value="admin">Super Admin</SelectItem>
                   )}
                   <SelectItem value="user">Usuario</SelectItem>
@@ -145,7 +144,7 @@ export default function UserForm({ user }: PetFormProps) {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push('/admin/pets')}
+            onClick={() => router.push('/admin/users')}
           >
             Cancel
           </Button>
@@ -155,7 +154,7 @@ export default function UserForm({ user }: PetFormProps) {
             className="bg-rose-600 hover:bg-rose-500"
           >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {user ? 'Update Pet' : 'Add Pet'}
+            {user ? 'Update User' : 'Add User'}
           </Button>
         </div>
       </form>
