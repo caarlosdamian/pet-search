@@ -1,0 +1,33 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "search": "Search",
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "Sign Up",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "pets": {
+    "title": "Pets",
+    "search": "Search pets",
+    "featured": "Featured pets",
+    "details": "Pet details",
+    "adopt": "Adopt",
+    "favorite": "Favorite",
+    "share": "Share"
+  },
+  "hero": {
+    "title": "Find your new best friend",
+    "description": "Finding your new best friend can be an exciting and gratifying experience. Here we help you find your new companion."
+  }
+}

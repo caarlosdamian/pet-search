@@ -5,6 +5,7 @@ import './globals.css';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { AuthProvider } from '@/components/auth/auth-provider';
+import { I18nProvider } from '@/components/providers/i18n-provider';
 import { Toaster } from 'sonner';
 
 // Inside your RootLayout component, add this before the closing body tag:
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
         alt: 'PawFinder - Pet Adoption Website',
       },
     ],
-    locale: 'en_US',
+    locale: 'es_ES',
     type: 'website',
   },
 };
@@ -42,15 +43,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body className={inter.className} suppressHydrationWarning>
-        <AuthProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </AuthProvider>
+        <I18nProvider>
+          <AuthProvider>
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </AuthProvider>
+        </I18nProvider>
         <Toaster />
       </body>
     </html>

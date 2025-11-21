@@ -1,0 +1,33 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "home": "Inicio",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "search": "Buscar",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "signup": "Registrarse",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  },
+  "pets": {
+    "title": "Mascotas",
+    "search": "Buscar mascotas",
+    "featured": "Mascotas destacadas",
+    "details": "Detalles de la mascota",
+    "adopt": "Adoptar",
+    "favorite": "Favorito",
+    "share": "Compartir"
+  },
+  "hero": {
+    "title": "Encuentra a tu nuevo mejor amigo",
+    "description": "Encontrar a tu nuevo mejor amigo puede ser una experiencia emocionante y gratificante. Aquí te ayudamos a encontrar a tu nuevo compañero de vida."
+  }
+}
