@@ -52,5 +52,5 @@ async function PetListWithData({
 }) {
   const pets = (await getPets(searchParams)) as unknown as PetsAPI;
 
-  return <PetList pets={pets?.pets} totalPages={pets.pagination.totalPages} />;
+  return <PetList pets={pets?.pets} totalPages={pets?.pagination?.totalPages} />;
 }

@@ -21,7 +21,7 @@ export default async function PetList({
 
   return (
     <div>
-      {pets.length > 0 ? (
+      {pets?.length > 0 ? (
         <>
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             <OptimisticPetsList pets={pets} favoriteIds={favoritePets} />

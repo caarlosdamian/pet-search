@@ -121,14 +121,10 @@ export async function getPets(params: {
     queryParams.append('limit', '10');
 
     const queryString = queryParams.toString();
-    const url = `${process.env.NEXT_PUBLIC_API_URL || ''}/api/pets${
-      queryString ? `?${queryString}` : ''
-    }`;
-
-    console.log('URL', url);
+    const url = `${process.env.NEXT_PUBLIC_API_URL || ''}/api/pets${queryString ? `?${queryString}` : ''
+      }`;
 
     const response = await fetch(url, { next: { revalidate: 60 } });
-
     if (!response.ok) {
       throw new Error('Failed to fetch pets');
     }

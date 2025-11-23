@@ -33,25 +33,55 @@ export async function GET(request: Request) {
     }
 
     if (type) {
-      query.type = type.includes(',') ? { $in: type.split(',') } : type;
+      if (type.includes(',')) {
+        // Multiple types - create case-insensitive regex for each
+        query.type = {
+          $in: type.split(',').map(t => new RegExp(`^${t.trim()}$`, 'i'))
+        };
+      } else {
+        // Single type - case-insensitive regex
+        query.type = { $regex: `^${type}$`, $options: 'i' };
+      }
     }
 
     if (location) {
-      query.location = location.includes(',')
-        ? { $in: location.split(',') }
-        : location;
+      if (location.includes(',')) {
+        query.location = {
+          $in: location.split(',').map(l => new RegExp(`^${l.trim()}$`, 'i'))
+        };
+      } else {
+        query.location = { $regex: `^${location}$`, $options: 'i' };
+      }
     }
 
     if (age) {
-      query.age = age.includes(',') ? { $in: age.split(',') } : age;
+      if (age.includes(',')) {
+        query.age = {
+          $in: age.split(',').map(a => new RegExp(`^${a.trim()}$`, 'i'))
+        };
+      } else {
+        query.age = { $regex: `^${age}$`, $options: 'i' };
+      }
     }
 
     if (gender) {
-      query.gender = gender.includes(',') ? { $in: gender.split(',') } : gender;
+      if (gender.includes(',')) {
+        query.gender = {
+          $in: gender.split(',').map(g => new RegExp(`^${g.trim()}$`, 'i'))
+        };
+      } else {
+        query.gender = { $regex: `^${gender}$`, $options: 'i' };
+      }
     }
 
     if (size) {
-      query.size = size.includes(',') ? { $in: size.split(',') } : size;
+      if (size.includes(',')) {
+        query.size = {
+          $in: size.split(',').map(s => new RegExp(`^${s.trim()}$`, 'i'))
+        };
+      } else {
+        query.size = { $regex: `^${size}$`, $options: 'i' };
+      }
     }
 
     // Add text search if provided
@@ -86,6 +116,8 @@ export async function GET(request: Request) {
     const totalPets = await db.collection('pets').countDocuments(query);
     const totalPages = Math.ceil(totalPets / limit);
 
+
+    console.log('TOTAL PETS', totalPets)
     return NextResponse.json({
       pets,
       pagination: {
@@ -98,7 +130,15 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error('Error fetching pets:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch pets' },
+      {
+        pets: [],
+        pagination: {
+          total: 0,
+          page: 0,
+          limit: 0,
+          totalPages: 0,
+        },
+      },
       { status: 500 }
     );
   }
