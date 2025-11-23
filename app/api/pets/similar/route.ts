@@ -23,9 +23,9 @@ export async function GET(request: Request) {
       type,
       _id: { $ne: new ObjectId(id) },
     };
-    if (breed) {
-      query.breed = breed;
-    }
+    // if (breed) {
+    //   query.breed = breed;
+    // }
 
     // Get similar pets
     const similarPets = await db

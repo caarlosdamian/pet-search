@@ -74,6 +74,10 @@
       "ogDescriptionTemplate": "{name} is a {age}-year-old {breed} looking for a loving home."
     }
   },
+  "similarPets": {
+    "title": "Similar Pets You May Like",
+    "viewAllButton": "View all available pets"
+  },
   "hero": {
     "badge": "Find your new best friend",
     "title": "Find your new best friend",

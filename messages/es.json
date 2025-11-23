@@ -74,6 +74,10 @@
       "ogDescriptionTemplate": "{name} es un {breed} de {age} años buscando un hogar amoroso."
     }
   },
+  "similarPets": {
+    "title": "Mascotas Similares que Te Pueden Gustar",
+    "viewAllButton": "Ver todas las mascotas disponibles"
+  },
   "hero": {
     "badge": "Encuentra a tu nuevo mejor amigo",
     "title": "Encuentra a tu nuevo mejor amigo",

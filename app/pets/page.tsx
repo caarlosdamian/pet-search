@@ -4,6 +4,7 @@ import PetList from '@/components/pets/pet-list';
 import PetListSkeleton from '@/components/pets/pet-list-skeleton';
 import type { PetsAPI } from '@/lib/types';
 import { getPets } from '@/lib/actions/pets';
+import PetsPageHeader from '@/components/pets/pets-page-header';
 
 export const metadata = {
   title: 'Find Pets - PawFinder',
@@ -19,13 +20,8 @@ export default async function PetsPage({
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-          Find Your Perfect Pet
-        </h1>
-        <p className="mt-4 max-w-xl text-gray-500">
-          Browse our available pets and filter by type, age, and location to
-          find your perfect match.
-        </p>
+        <PetsPageHeader />
+
 
         <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
           {/* Filters */}
