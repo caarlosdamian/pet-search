@@ -168,3 +168,38 @@ export async function createPet(petData: Omit<Pet, 'id' | '_id'>) {
     return { success: false, error };
   }
 }
+
+export const getFilters = async () => {
+  try {
+    const { db } = await connectToDatabase();
+    const pipeline = [
+      {
+        $group: {
+          _id: null,
+          types: { $addToSet: '$type' },
+          locations: { $addToSet: '$location' },
+          ages: { $addToSet: '$age' },
+          genders: { $addToSet: '$gender' },
+          sizes: { $addToSet: '$size' },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          types: 1,
+          locations: 1,
+          ages: 1,
+          genders: 1,
+          sizes: 1,
+        },
+      },
+    ];
+
+    const [filters] = await db.collection('pets').aggregate(pipeline).toArray();
+
+    return filters;
+  } catch (error) {
+    console.error('Error fetching filters:', error);
+    return [];
+  }
+}

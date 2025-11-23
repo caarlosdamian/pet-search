@@ -26,6 +26,54 @@
     "favorite": "Favorito",
     "share": "Compartir"
   },
+  "petsPage": {
+    "title": "Encuentra a Tu Mascota Perfecta",
+    "description": "Explora nuestras mascotas disponibles y filtra por tipo, edad y ubicación para encontrar tu compañero perfecto.",
+    "filters": "Filtros"
+  },
+  "petDetail": {
+    "breadcrumb": {
+      "home": "Inicio",
+      "pets": "Mascotas"
+    },
+    "addToFavorites": "Agregar a favoritos",
+    "share": "Compartir",
+    "yearsOld": "años",
+    "yearOld": "año",
+    "petDescription": "Descripción de la mascota",
+    "tabs": {
+      "details": "Detalles",
+      "health": "Salud",
+      "requirements": "Requisitos"
+    },
+    "attributes": {
+      "spayedNeutered": "Esterilizado/Castrado",
+      "houseTrained": "Entrenado en Casa",
+      "goodWithKids": "Bueno con Niños",
+      "goodWithPets": "Bueno con Mascotas",
+      "vaccinated": "Vacunado",
+      "microchipped": "Con Microchip",
+      "specialNeeds": "Necesidades Especiales",
+      "yes": "Sí",
+      "no": "No"
+    },
+    "adoptionRequirements": {
+      "applicationReview": "Revisión de solicitud",
+      "homeVisit": "Visita al hogar",
+      "adoptionFee": "Tarifa de adopción",
+      "referenceCheck": "Verificación de referencias"
+    },
+    "notFound": {
+      "title": "Mascota No Encontrada - PawFinder",
+      "description": "La mascota que buscas no pudo ser encontrada."
+    },
+    "metadata": {
+      "titleSuffix": "- PawFinder",
+      "descriptionTemplate": "Conoce a {name}, un {breed} de {age} años buscando un hogar amoroso.",
+      "ogTitleTemplate": "Conoce a {name} - PawFinder",
+      "ogDescriptionTemplate": "{name} es un {breed} de {age} años buscando un hogar amoroso."
+    }
+  },
   "hero": {
     "badge": "Encuentra a tu nuevo mejor amigo",
     "title": "Encuentra a tu nuevo mejor amigo",

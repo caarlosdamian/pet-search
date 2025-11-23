@@ -12,10 +12,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { PlaceSelect } from '../ui/placeSelect';
+import { usePetFilters } from '@/hooks/usePetFilters';
 
 export default function PetFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { filters: petFilters } = usePetFilters();
 
   const [filters, setFilters] = useState({
     search: searchParams.get('search') || '',
@@ -81,12 +83,11 @@ export default function PetFilters() {
             <SelectValue placeholder="Pet Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="dog">Dogs</SelectItem>
-            <SelectItem value="cat">Cats</SelectItem>
-            <SelectItem value="bird">Birds</SelectItem>
-            <SelectItem value="small-animal">Small Animals</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
+            {petFilters?.types?.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 

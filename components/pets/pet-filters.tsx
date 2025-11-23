@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -10,10 +10,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { usePetFilters } from '@/hooks/usePetFilters';
+import PetFiltersSkeleton from './pet-filters-skeleton';
 
 export default function PetFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { filters: petFilters, isLoading } = usePetFilters();
 
   // Initialize state from URL params
   const [filters, setFilters] = useState({
@@ -100,23 +103,27 @@ export default function PetFilters() {
               Pet Type
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-2">
-                {['dog', 'cat', 'bird', 'small-animal', 'other'].map((type) => (
-                  <div key={type} className="flex items-center">
-                    <Checkbox
-                      id={`type-${type}`}
-                      checked={filters.type.includes(type)}
-                      onCheckedChange={() => updateFilter('type', type)}
-                    />
-                    <label
-                      htmlFor={`type-${type}`}
-                      className="ml-2 text-sm text-gray-600 capitalize"
-                    >
-                      {type.replace('-', ' ')}
-                    </label>
-                  </div>
-                ))}
-              </div>
+              {isLoading ? (
+                <PetFiltersSkeleton />
+              ) : (
+                <div className="space-y-2">
+                  {petFilters?.types?.map((type) => (
+                    <div key={type} className="flex items-center">
+                      <Checkbox
+                        id={`type-${type}`}
+                        checked={filters.type.includes(type)}
+                        onCheckedChange={() => updateFilter('type', type)}
+                      />
+                      <label
+                        htmlFor={`type-${type}`}
+                        className="ml-2 text-sm text-gray-600 capitalize"
+                      >
+                        {type.replace('-', ' ')}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </AccordionContent>
           </AccordionItem>
 
@@ -126,23 +133,27 @@ export default function PetFilters() {
               Age
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-2">
-                {['baby', 'young', 'adult', 'senior'].map((age) => (
-                  <div key={age} className="flex items-center">
-                    <Checkbox
-                      id={`age-${age}`}
-                      checked={filters.age.includes(age)}
-                      onCheckedChange={() => updateFilter('age', age)}
-                    />
-                    <label
-                      htmlFor={`age-${age}`}
-                      className="ml-2 text-sm text-gray-600 capitalize"
-                    >
-                      {age}
-                    </label>
-                  </div>
-                ))}
-              </div>
+              {isLoading ? (
+                <PetFiltersSkeleton />
+              ) : (
+                <div className="space-y-2">
+                  {['baby', 'young', 'adult', 'senior'].map((age) => (
+                    <div key={age} className="flex items-center">
+                      <Checkbox
+                        id={`age-${age}`}
+                        checked={filters.age.includes(age)}
+                        onCheckedChange={() => updateFilter('age', age)}
+                      />
+                      <label
+                        htmlFor={`age-${age}`}
+                        className="ml-2 text-sm text-gray-600 capitalize"
+                      >
+                        {age}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </AccordionContent>
           </AccordionItem>
 
@@ -152,23 +163,27 @@ export default function PetFilters() {
               Size
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-2">
-                {['small', 'medium', 'large', 'extra-large'].map((size) => (
-                  <div key={size} className="flex items-center">
-                    <Checkbox
-                      id={`size-${size}`}
-                      checked={filters.size.includes(size)}
-                      onCheckedChange={() => updateFilter('size', size)}
-                    />
-                    <label
-                      htmlFor={`size-${size}`}
-                      className="ml-2 text-sm text-gray-600 capitalize"
-                    >
-                      {size.replace('-', ' ')}
-                    </label>
-                  </div>
-                ))}
-              </div>
+              {isLoading ? (
+                <PetFiltersSkeleton />
+              ) : (
+                <div className="space-y-2">
+                  {['small', 'medium', 'large', 'extra-large'].map((size) => (
+                    <div key={size} className="flex items-center">
+                      <Checkbox
+                        id={`size-${size}`}
+                        checked={filters.size.includes(size)}
+                        onCheckedChange={() => updateFilter('size', size)}
+                      />
+                      <label
+                        htmlFor={`size-${size}`}
+                        className="ml-2 text-sm text-gray-600 capitalize"
+                      >
+                        {size.replace('-', ' ')}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </AccordionContent>
           </AccordionItem>
 
@@ -178,23 +193,27 @@ export default function PetFilters() {
               Gender
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-2">
-                {['male', 'female'].map((gender) => (
-                  <div key={gender} className="flex items-center">
-                    <Checkbox
-                      id={`gender-${gender}`}
-                      checked={filters.gender.includes(gender)}
-                      onCheckedChange={() => updateFilter('gender', gender)}
-                    />
-                    <label
-                      htmlFor={`gender-${gender}`}
-                      className="ml-2 text-sm text-gray-600 capitalize"
-                    >
-                      {gender}
-                    </label>
-                  </div>
-                ))}
-              </div>
+              {isLoading ? (
+                <PetFiltersSkeleton />
+              ) : (
+                <div className="space-y-2">
+                  {petFilters?.genders?.map((gender) => (
+                    <div key={gender} className="flex items-center">
+                      <Checkbox
+                        id={`gender-${gender}`}
+                        checked={filters.gender.includes(gender)}
+                        onCheckedChange={() => updateFilter('gender', gender)}
+                      />
+                      <label
+                        htmlFor={`gender-${gender}`}
+                        className="ml-2 text-sm text-gray-600 capitalize"
+                      >
+                        {gender}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </AccordionContent>
           </AccordionItem>
 
@@ -204,34 +223,32 @@ export default function PetFilters() {
               Location
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-2">
-                {[
-                  'new-york',
-                  'los-angeles',
-                  'chicago',
-                  'houston',
-                  'phoenix',
-                ].map((location) => (
-                  <div key={location} className="flex items-center">
-                    <Checkbox
-                      id={`location-${location}`}
-                      checked={filters.location.includes(location)}
-                      onCheckedChange={() => updateFilter('location', location)}
-                    />
-                    <label
-                      htmlFor={`location-${location}`}
-                      className="ml-2 text-sm text-gray-600 capitalize"
-                    >
-                      {location
-                        .split('-')
-                        .map(
-                          (word) => word.charAt(0).toUpperCase() + word.slice(1)
-                        )
-                        .join(' ')}
-                    </label>
-                  </div>
-                ))}
-              </div>
+              {isLoading ? (
+                <PetFiltersSkeleton />
+              ) : (
+                <div className="space-y-2">
+                  {petFilters?.locations?.map((location) => (
+                    <div key={location} className="flex items-center">
+                      <Checkbox
+                        id={`location-${location}`}
+                        checked={filters.location.includes(location)}
+                        onCheckedChange={() => updateFilter('location', location)}
+                      />
+                      <label
+                        htmlFor={`location-${location}`}
+                        className="ml-2 text-sm text-gray-600 capitalize"
+                      >
+                        {location
+                          .split('-')
+                          .map(
+                            (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(' ')}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </AccordionContent>
           </AccordionItem>
         </Accordion>

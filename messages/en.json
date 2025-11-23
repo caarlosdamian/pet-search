@@ -26,6 +26,54 @@
     "favorite": "Favorite",
     "share": "Share"
   },
+  "petsPage": {
+    "title": "Find Your Perfect Pet",
+    "description": "Browse our available pets and filter by type, age, and location to find your perfect match.",
+    "filters": "Filters"
+  },
+  "petDetail": {
+    "breadcrumb": {
+      "home": "Home",
+      "pets": "Pets"
+    },
+    "addToFavorites": "Add to favorites",
+    "share": "Share",
+    "yearsOld": "years old",
+    "yearOld": "year old",
+    "petDescription": "Pet description",
+    "tabs": {
+      "details": "Details",
+      "health": "Health",
+      "requirements": "Requirements"
+    },
+    "attributes": {
+      "spayedNeutered": "Spayed/Neutered",
+      "houseTrained": "House Trained",
+      "goodWithKids": "Good with Kids",
+      "goodWithPets": "Good with Pets",
+      "vaccinated": "Vaccinated",
+      "microchipped": "Microchipped",
+      "specialNeeds": "Special Needs",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "adoptionRequirements": {
+      "applicationReview": "Application review",
+      "homeVisit": "Home visit",
+      "adoptionFee": "Adoption fee",
+      "referenceCheck": "Reference check"
+    },
+    "notFound": {
+      "title": "Pet Not Found - PawFinder",
+      "description": "The pet you are looking for could not be found."
+    },
+    "metadata": {
+      "titleSuffix": "- PawFinder",
+      "descriptionTemplate": "Meet {name}, a {age}-year-old {breed} looking for a loving home.",
+      "ogTitleTemplate": "Meet {name} - PawFinder",
+      "ogDescriptionTemplate": "{name} is a {age}-year-old {breed} looking for a loving home."
+    }
+  },
   "hero": {
     "badge": "Find your new best friend",
     "title": "Find your new best friend",
