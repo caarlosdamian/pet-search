@@ -27,7 +27,35 @@
     "share": "Compartir"
   },
   "hero": {
+    "badge": "Encuentra a tu nuevo mejor amigo",
     "title": "Encuentra a tu nuevo mejor amigo",
-    "description": "Encontrar a tu nuevo mejor amigo puede ser una experiencia emocionante y gratificante. Aquí te ayudamos a encontrar a tu nuevo compañero de vida."
+    "description": "Encontrar a tu nuevo mejor amigo puede ser una experiencia emocionante y gratificante. Aquí te ayudamos a encontrar a tu nuevo compañero de vida.",
+    "searchPetButton": "Buscar una mascota",
+    "learnMore": "Saber más",
+    "imageAlt": "Perro feliz con su dueño"
+  },
+  "searchBar": {
+    "petTypePlaceholder": "Tipo de mascota",
+    "locationPlaceholder": "Ubicación",
+    "searchButton": "Buscar",
+    "petTypes": {
+      "dog": "Perros",
+      "cat": "Gatos",
+      "bird": "Aves",
+      "smallAnimal": "Animales pequeños",
+      "other": "Otros"
+    }
+  },
+  "featuredPets": {
+    "title": "Conoce a Nuestras Mascotas",
+    "description": "Estos adorables compañeros están buscando un hogar para siempre.",
+    "noPetsAvailable": "No hay mascotas destacadas disponibles en este momento.",
+    "viewAllButton": "Ver Todas las Mascotas"
+  },
+  "callToAction": {
+    "title": "¿Listo para encontrar a tu nuevo mejor amigo?",
+    "description": "Explora nuestras mascotas disponibles y comienza tu viaje de adopción hoy mismo.",
+    "findPetButton": "Encuentra una mascota",
+    "learnMoreButton": "Saber más"
   }
 }

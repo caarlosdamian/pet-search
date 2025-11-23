@@ -27,7 +27,35 @@
     "share": "Share"
   },
   "hero": {
+    "badge": "Find your new best friend",
     "title": "Find your new best friend",
-    "description": "Finding your new best friend can be an exciting and gratifying experience. Here we help you find your new companion."
+    "description": "Finding your new best friend can be an exciting and gratifying experience. Here we help you find your new companion.",
+    "searchPetButton": "Search for a pet",
+    "learnMore": "Learn more",
+    "imageAlt": "Happy dog with owner"
+  },
+  "searchBar": {
+    "petTypePlaceholder": "Pet type",
+    "locationPlaceholder": "Location",
+    "searchButton": "Search",
+    "petTypes": {
+      "dog": "Dogs",
+      "cat": "Cats",
+      "bird": "Birds",
+      "smallAnimal": "Small animals",
+      "other": "Other"
+    }
+  },
+  "featuredPets": {
+    "title": "Meet Our Pets",
+    "description": "These adorable companions are looking for their forever home.",
+    "noPetsAvailable": "No featured pets available at this time.",
+    "viewAllButton": "View All Pets"
+  },
+  "callToAction": {
+    "title": "Ready to find your new best friend?",
+    "description": "Explore our available pets and start your adoption journey today.",
+    "findPetButton": "Find a pet",
+    "learnMoreButton": "Learn more"
   }
 }

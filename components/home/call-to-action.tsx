@@ -1,17 +1,21 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 export default function CallToAction() {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-rose-600">
       <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            ¿Listo para encontrar a tu nuevo mejor amigo?
+            {t('callToAction.title')}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-8 text-rose-100">
-            Explora nuestras mascotas disponibles y comienza tu viaje de
-            adopción hoy mismo.
+            {t('callToAction.description')}
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Button
@@ -19,7 +23,7 @@ export default function CallToAction() {
               size="lg"
               className="bg-white text-rose-600 hover:bg-rose-50"
             >
-              <Link href="/pets">Encuentra una mascota</Link>
+              <Link href="/pets">{t('callToAction.findPetButton')}</Link>
             </Button>
             <Button
               asChild
@@ -27,7 +31,7 @@ export default function CallToAction() {
               size="lg"
               className="hover:text-white border-white hover:bg-rose-500"
             >
-              <Link href="/about">Saber más</Link>
+              <Link href="/about">{t('callToAction.learnMoreButton')}</Link>
             </Button>
           </div>
         </div>

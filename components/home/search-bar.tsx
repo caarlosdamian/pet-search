@@ -14,9 +14,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { PlaceSelect } from '../ui/placeSelect';
+import { useTranslation } from 'react-i18next';
 
 export default function SearchBar() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [petType, setPetType] = useState('');
   const [location, setLocation] = useState('');
 
@@ -42,14 +44,14 @@ export default function SearchBar() {
           <div className="flex-1">
             <Select value={petType} onValueChange={setPetType}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Tipo de mascota" />
+                <SelectValue placeholder={t('searchBar.petTypePlaceholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="dog">Perros</SelectItem>
-                <SelectItem value="cat">Gatos</SelectItem>
-                <SelectItem value="bird">Aves</SelectItem>
-                <SelectItem value="small-animal">Animales pequeños</SelectItem>
-                <SelectItem value="other">Otros</SelectItem>
+                <SelectItem value="dog">{t('searchBar.petTypes.dog')}</SelectItem>
+                <SelectItem value="cat">{t('searchBar.petTypes.cat')}</SelectItem>
+                <SelectItem value="bird">{t('searchBar.petTypes.bird')}</SelectItem>
+                <SelectItem value="small-animal">{t('searchBar.petTypes.smallAnimal')}</SelectItem>
+                <SelectItem value="other">{t('searchBar.petTypes.other')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -57,7 +59,7 @@ export default function SearchBar() {
           <div className="flex-1">
             <Select value={location} onValueChange={setLocation}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Ubicación" />
+                <SelectValue placeholder={t('searchBar.locationPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
                 <PlaceSelect />
@@ -67,7 +69,7 @@ export default function SearchBar() {
 
           <Button type="submit" className="bg-rose-600 hover:bg-rose-500">
             <Search className="mr-2 h-4 w-4" />
-            Buscar
+            {t('searchBar.searchButton')}
           </Button>
         </form>
       </div>
