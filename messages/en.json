@@ -109,5 +109,47 @@
     "description": "Explore our available pets and start your adoption journey today.",
     "findPetButton": "Find a pet",
     "learnMoreButton": "Learn more"
+  },
+  "signupPage": {
+    "title": "Create your account",
+    "subtitle": "Already have an account?",
+    "login": "Log in",
+    "nameLabel": "Full Name",
+    "namePlaceholder": "John Doe",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "john@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Create a strong password",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "submit": "Create account",
+    "submitting": "Creating account...",
+    "passwordRules": {
+      "title": "Password must contain:",
+      "minChars": "At least 8 characters",
+      "uppercase": "One uppercase letter",
+      "lowercase": "One lowercase letter",
+      "number": "One number"
+    },
+    "terms": {
+      "prefix": "By signing up, you agree to our",
+      "tos": "Terms of Service",
+      "and": "and",
+      "privacy": "Privacy Policy"
+    },
+    "validation": {
+      "nameMin": "Name must be at least 2 characters",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordUppercase": "Password must contain at least one uppercase letter",
+      "passwordLowercase": "Password must contain at least one lowercase letter",
+      "passwordNumber": "Password must contain at least one number",
+      "passwordsNoMatch": "Passwords don't match"
+    },
+    "errors": {
+      "generic": "An unexpected error occurred. Please try again.",
+      "signIn": "Account created but failed to sign in. Please try logging in.",
+      "success": "Account created!"
+    }
   }
 }

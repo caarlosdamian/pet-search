@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { name, email, password, organizationId, welcomeMessage } = await request.json()
+    const { name, email, password, organizationId } = await request.json()
 
     if (!name || !email || !password || !organizationId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })

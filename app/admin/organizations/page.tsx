@@ -216,6 +216,7 @@ async function getOrganizations(searchParams: { [key: string]: string | string[]
     const { db } = await connectToDatabase()
 
     // Build query from search params
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const query: Record<string, any> = {}
 
     if (searchParams.search) {

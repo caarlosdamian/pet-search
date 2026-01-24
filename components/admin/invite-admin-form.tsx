@@ -86,7 +86,7 @@ export default function InviteAdminForm({
         throw new Error(errorData.error || 'Failed to invite admin');
       }
 
-      const result = await response.json();
+      await response.json();
 
       toast('Admin invited successfully');
 

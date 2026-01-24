@@ -7,7 +7,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
 
     const type = searchParams.get('type');
-    const breed = searchParams.get('breed');
+    // const breed = searchParams.get('breed');
     const id = searchParams.get('id');
 
     if (!type || !id) {

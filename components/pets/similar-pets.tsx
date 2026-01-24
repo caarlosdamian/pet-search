@@ -11,13 +11,9 @@ import { useTranslation } from 'react-i18next';
 export default function SimilarPets({ pets }: { pets: Pet[] }) {
   const { t } = useTranslation();
 
-  if (pets.length === 0) {
-    return null;
-  }
-
   const { data: session } = useSession();
-
   const [favoritePets, setFavoritePets] = useState<string[]>([]);
+
   useEffect(() => {
     const fetchFavoritePets = async () => {
       const customSession = session as CustomSession | null;
@@ -28,6 +24,10 @@ export default function SimilarPets({ pets }: { pets: Pet[] }) {
     };
     fetchFavoritePets();
   }, [session]);
+
+  if (pets.length === 0) {
+    return null;
+  }
 
   return (
     <section className="mt-16 border-t border-gray-200 pt-16">

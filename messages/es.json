@@ -109,5 +109,47 @@
     "description": "Explora nuestras mascotas disponibles y comienza tu viaje de adopción hoy mismo.",
     "findPetButton": "Encuentra una mascota",
     "learnMoreButton": "Saber más"
+  },
+  "signupPage": {
+    "title": "Crea tu cuenta",
+    "subtitle": "¿Ya tienes una cuenta?",
+    "login": "Iniciar sesión",
+    "nameLabel": "Nombre completo",
+    "namePlaceholder": "Juan Pérez",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "juan@ejemplo.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Crea una contraseña segura",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu contraseña",
+    "submit": "Crear cuenta",
+    "submitting": "Creando cuenta...",
+    "passwordRules": {
+      "title": "La contraseña debe contener:",
+      "minChars": "Al menos 8 caracteres",
+      "uppercase": "Una letra mayúscula",
+      "lowercase": "Una letra minúscula",
+      "number": "Un número"
+    },
+    "terms": {
+      "prefix": "Al registrarte, aceptas nuestros",
+      "tos": "Términos de servicio",
+      "and": "y",
+      "privacy": "Política de privacidad"
+    },
+    "validation": {
+      "nameMin": "El nombre debe tener al menos 2 caracteres",
+      "emailInvalid": "Por favor ingresa un correo electrónico válido",
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres",
+      "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula",
+      "passwordLowercase": "La contraseña debe contener al menos una letra minúscula",
+      "passwordNumber": "La contraseña debe contener al menos un número",
+      "passwordsNoMatch": "Las contraseñas no coinciden"
+    },
+    "errors": {
+      "generic": "Ocurrió un error inesperado. Por favor intenta de nuevo.",
+      "signIn": "Cuenta creada pero falló el inicio de sesión. Por favor intenta iniciar sesión.",
+      "success": "¡Cuenta creada!"
+    }
   }
 }

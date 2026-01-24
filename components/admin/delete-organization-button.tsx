@@ -70,7 +70,7 @@ export default function DeleteOrganizationButton({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Organization</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "{organizationName}"? This action
+            Are you sure you want to delete &quot;{organizationName}&quot;? This action
             cannot be undone and will permanently delete:
             <ul className="mt-2 list-disc pl-5">
               <li>The organization and all its data</li>

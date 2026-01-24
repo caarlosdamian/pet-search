@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
-import { Menu, X, User, Heart, LogOut } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -62,11 +62,10 @@ export default function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className={`text-sm font-semibold leading-6 ${
-                pathname === item.href
-                  ? 'text-rose-600'
-                  : 'text-gray-900 hover:text-rose-600'
-              }`}
+              className={`text-sm font-semibold leading-6 ${pathname === item.href
+                ? 'text-rose-600'
+                : 'text-gray-900 hover:text-rose-600'
+                }`}
             >
               {item.name}
             </Link>
@@ -162,11 +161,10 @@ export default function Header() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                        pathname === item.href
-                          ? 'text-rose-600'
-                          : 'text-gray-900 hover:bg-gray-50'
-                      }`}
+                      className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${pathname === item.href
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:bg-gray-50'
+                        }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}

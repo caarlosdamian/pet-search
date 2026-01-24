@@ -111,6 +111,7 @@ export async function GET(request: Request) {
     const { db } = await connectToDatabase();
 
     // Build query based on user role
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const matchQuery: any = { userId: new ObjectId(userId) };
 
     if (session.user.role === 'org_admin' && session.user.organizationId) {

@@ -20,13 +20,11 @@ import { toast } from 'sonner';
 interface DeleteUserButtonProps {
   userId: string;
   userName: string;
-  organizationId?: string;
 }
 
 export default function DeleteUserButton({
   userId,
   userName,
-  organizationId,
 }: DeleteUserButtonProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);

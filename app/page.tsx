@@ -4,7 +4,6 @@ import SearchBar from '@/components/home/search-bar';
 // import Testimonials from '@/components/home/testimonials';
 import CallToAction from '@/components/home/call-to-action';
 import { getFeaturedPets, getFavoritePets } from '@/lib/actions/pets';
-import SeedButton from '@/components/home/seed-button';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import type { CustomSession } from '@/lib/types';
