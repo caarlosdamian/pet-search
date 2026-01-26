@@ -18,16 +18,16 @@ export const metadata: Metadata = {
 export default async function EditOrganizationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const session = (await getServerSession(authOptions)) as CustomSession;
-
+  const { id } = await params;
   // Only super admins can access this page
   if (!session || session.user.role !== 'admin') {
     redirect('/admin');
   }
 
-  const organization = await getOrganization(params.id);
+  const organization = await getOrganization(id);
 
   if (!organization) {
     notFound();

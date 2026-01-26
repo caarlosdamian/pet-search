@@ -12,21 +12,23 @@ import { redirect, notFound } from "next/navigation"
 import { connectToDatabase } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import DeleteOrganizationButton from "@/components/admin/delete-organization-button"
+import { CustomSession } from "@/lib/types"
 
 export const metadata = {
   title: "Organization Details - PawFinder Admin",
   description: "View organization details and statistics.",
 }
 
-export default async function OrganizationDetailsPage({ params }: { params: { id: string } }) {
-  const session = await getServerSession(authOptions)
+export default async function OrganizationDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const session = await getServerSession(authOptions) as CustomSession
+  const { id } = await params
 
   // Only super admins can access this page
   if (!session || session.user.role !== "admin") {
     redirect("/admin")
   }
 
-  const { organization, stats } = await getOrganizationDetails(params.id)
+  const { organization, stats } = await getOrganizationDetails(id)
 
   if (!organization) {
     notFound()

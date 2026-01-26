@@ -151,5 +151,26 @@
       "signIn": "Cuenta creada pero falló el inicio de sesión. Por favor intenta iniciar sesión.",
       "success": "¡Cuenta creada!"
     }
+  },
+  "loginPage": {
+    "title": "Bienvenido de nuevo",
+    "subtitle": "¿No tienes una cuenta?",
+    "signup": "Regístrate",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "juan@ejemplo.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "rememberMe": "Recuérdame",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "submit": "Iniciar sesión",
+    "submitting": "Iniciando sesión...",
+    "validation": {
+      "emailInvalid": "Por favor ingresa un correo electrónico válido",
+      "passwordRequired": "La contraseña es obligatoria"
+    },
+    "errors": {
+      "invalid": "Correo electrónico o contraseña inválidos. Por favor intenta de nuevo.",
+      "generic": "Ocurrió un error inesperado. Por favor intenta de nuevo."
+    }
   }
 }

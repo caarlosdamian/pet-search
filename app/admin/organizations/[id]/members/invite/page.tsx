@@ -7,21 +7,22 @@ import { redirect, notFound } from "next/navigation"
 import { connectToDatabase } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import InviteAdminForm from "@/components/admin/invite-admin-form"
+import { CustomSession, Organization } from "@/lib/types"
 
 export const metadata = {
   title: "Invite Organization Admin - PawFinder Admin",
   description: "Invite a new administrator to the organization.",
 }
 
-export default async function InviteAdminPage({ params }: { params: { id: string } }) {
-  const session = await getServerSession(authOptions)
-
+export default async function InviteAdminPage({ params }: { params: Promise<{ id: string }> }) {
+  const session = await getServerSession(authOptions) as CustomSession
+  const { id } = await params
   // Only super admins can access this page
   if (!session || session.user.role !== "admin") {
     redirect("/admin")
   }
 
-  const organization = await getOrganization(params.id)
+  const organization = await getOrganization(id)
 
   if (!organization) {
     notFound()
@@ -51,7 +52,7 @@ export default async function InviteAdminPage({ params }: { params: { id: string
   )
 }
 
-async function getOrganization(id: string) {
+async function getOrganization(id: string): Promise<Organization | null> {
   try {
     if (!ObjectId.isValid(id)) {
       return null
@@ -70,7 +71,7 @@ async function getOrganization(id: string) {
     return {
       ...organization,
       id: organization._id.toString(),
-    }
+    } as unknown as Organization
   } catch (error) {
     console.error("Error fetching organization:", error)
     return null

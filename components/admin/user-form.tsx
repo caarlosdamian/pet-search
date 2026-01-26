@@ -38,18 +38,17 @@ export default function UserForm({ user }: PetFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session } = useSession() as unknown as { data: CustomSession };
-console.log(user)
   const form = useForm({
     resolver: zodResolver(userFormSchema),
     values: user
       ? {
-          ...JSON.parse(user as unknown as string),
-        }
+        ...JSON.parse(user as unknown as string),
+      }
       : {
-          name: '',
-          email: '',
-          role: '',
-        },
+        name: '',
+        email: '',
+        role: '',
+      },
   });
 
   useEffect(() => {

@@ -151,5 +151,26 @@
       "signIn": "Account created but failed to sign in. Please try logging in.",
       "success": "Account created!"
     }
+  },
+  "loginPage": {
+    "title": "Welcome back",
+    "subtitle": "Dont have an account?",
+    "signup": "Sign up",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "john@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "validation": {
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required"
+    },
+    "errors": {
+      "invalid": "Invalid email or password. Please try again.",
+      "generic": "An unexpected error occurred. Please try again."
+    }
   }
 }

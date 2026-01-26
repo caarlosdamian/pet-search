@@ -37,7 +37,7 @@ export const metadata = {
 export default async function AdminApplicationsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const session = (await getServerSession(authOptions)) as CustomSession;
 
@@ -103,7 +103,7 @@ async function ApplicationsTableWithData({
   searchParams,
   user,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
   user: { id: string; role: string; organizationId?: string };
 }) {
   const { applications, totalPages, stats } = await getApplications(
@@ -212,8 +212,8 @@ async function ApplicationsTableWithData({
                           application.status === 'approved'
                             ? 'bg-green-50 text-green-700 hover:bg-green-50'
                             : application.status === 'rejected'
-                            ? 'bg-red-50 text-red-700 hover:bg-red-50'
-                            : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-50'
+                              ? 'bg-red-50 text-red-700 hover:bg-red-50'
+                              : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-50'
                         }
                       >
                         {application.status}
@@ -223,9 +223,9 @@ async function ApplicationsTableWithData({
                       <div className="text-sm">
                         {application.createdAt
                           ? formatDistanceToNow(
-                              new Date(application.createdAt),
-                              { addSuffix: true }
-                            )
+                            new Date(application.createdAt),
+                            { addSuffix: true }
+                          )
                           : 'Unknown'}
                       </div>
                     </TableCell>
@@ -233,9 +233,9 @@ async function ApplicationsTableWithData({
                       <div className="text-sm">
                         {application.updatedAt
                           ? formatDistanceToNow(
-                              new Date(application.updatedAt),
-                              { addSuffix: true }
-                            )
+                            new Date(application.updatedAt),
+                            { addSuffix: true }
+                          )
                           : 'Unknown'}
                       </div>
                     </TableCell>
@@ -275,7 +275,7 @@ async function ApplicationsTableWithData({
 }
 
 async function getApplications(
-  searchParams: { [key: string]: string | string[] | undefined },
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>,
   user: { id: string; role: string; organizationId?: string }
 ) {
   try {

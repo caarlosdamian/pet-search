@@ -12,7 +12,6 @@ export const getUser = async (searchParams: {
 }) => {
   try {
     const query: Record<string, unknown> = {};
-console.log('searchParams',searchParams)
     // if (searchParams.id) {
     //   query.id = searchParams.name;
     // }
@@ -68,10 +67,10 @@ export const updateUser = async (body: updateBody) => {
     if (!user) {
       return null;
     }
-        const newUser = await db
+    const newUser = await db
       .collection('users')
-      .updateOne({ _id: userId }, { $set: {...rest}});
-return newUser.upsertedId
+      .updateOne({ _id: userId }, { $set: { ...rest } });
+    return newUser.upsertedId
   } catch (error) {
     console.error('Error fetching users:', error);
     return {
@@ -125,7 +124,6 @@ export const createUser = async (body: UserFormValues) => {
     `,
     });
 
-    console.log('Message sent:', info.messageId);
 
     return { message: `User Created ${user.insertedId}` };
   } catch (error) {

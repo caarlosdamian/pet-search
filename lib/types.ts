@@ -58,7 +58,7 @@ export interface User {
   name: string;
   email: string;
   image?: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'org_admin';
   favorites: string[];
   applications: string[];
   createdAt: string;

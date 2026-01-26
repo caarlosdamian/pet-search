@@ -11,21 +11,22 @@ import { connectToDatabase } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { formatDistanceToNow } from "date-fns"
 import DeleteUserButton from "@/components/admin/delete-user-button"
+import { CustomSession, Organization, User as UserType } from "@/lib/types"
 
 export const metadata = {
   title: "Organization Members - PawFinder Admin",
   description: "Manage organization members and administrators.",
 }
 
-export default async function OrganizationMembersPage({ params }: { params: { id: string } }) {
-  const session = await getServerSession(authOptions)
-
+export default async function OrganizationMembersPage({ params }: { params: Promise<{ id: string }> }) {
+  const session = await getServerSession(authOptions) as CustomSession
+  const { id } = await params
   // Only super admins can access this page
   if (!session || session.user.role !== "admin") {
     redirect("/admin")
   }
 
-  const { organization, members } = await getOrganizationMembers(params.id)
+  const { organization, members } = await getOrganizationMembers(id)
 
   if (!organization) {
     notFound()
@@ -141,17 +142,19 @@ export default async function OrganizationMembersPage({ params }: { params: { id
                       </Badge>
                     </TableCell>
                     <TableCell>{formatDistanceToNow(new Date(member.createdAt), { addSuffix: true })}</TableCell>
-                    <TableCell>
+                    {/* TODO: Add last active */}
+                    {/* <TableCell>
                       {member.lastLoginAt
                         ? formatDistanceToNow(new Date(member.lastLoginAt), { addSuffix: true })
                         : "Never"}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button asChild variant="outline" size="sm">
                           <Link href={`/admin/users/${member.id}`}>View</Link>
                         </Button>
-                        <DeleteUserButton userId={member.id} userName={member.name} organizationId={organization.id} />
+                        {/* organizationId={organization.id as unknown as string} estava esto */}
+                        <DeleteUserButton userId={member.id} userName={member.name} />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -165,7 +168,7 @@ export default async function OrganizationMembersPage({ params }: { params: { id
   )
 }
 
-async function getOrganizationMembers(id: string) {
+async function getOrganizationMembers(id: string): Promise<{ organization: Organization | null; members: UserType[] }> {
   try {
     if (!ObjectId.isValid(id)) {
       return { organization: null, members: [] }
@@ -200,7 +203,7 @@ async function getOrganizationMembers(id: string) {
         ...member,
         id: member._id.toString(),
       })),
-    }
+    } as unknown as { organization: Organization | null; members: UserType[] }
   } catch (error) {
     console.error("Error fetching organization members:", error)
     return { organization: null, members: [] }
