@@ -7,11 +7,13 @@ import { CustomSession } from '@/lib/types';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Check if user is authenticated and is an admin
     const session = (await getServerSession(authOptions)) as CustomSession;
+
+    const { id } = await params
 
     if (!session || session.user.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -25,7 +27,7 @@ export async function PUT(
     }
 
     // Validate ObjectId format
-    if (!ObjectId.isValid(params.id)) {
+    if (!ObjectId.isValid(id)) {
       return NextResponse.json(
         { error: 'Invalid application ID' },
         { status: 400 }
@@ -37,7 +39,7 @@ export async function PUT(
 
     // Update application status
     const result = await db.collection('applications').updateOne(
-      { _id: new ObjectId(params.id) },
+      { _id: new ObjectId(id) },
       {
         $set: {
           status,

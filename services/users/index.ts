@@ -5,19 +5,17 @@ import { UserFormValues } from '@/lib/shemas';
 import { hash } from 'bcryptjs';
 import { randomUUID } from 'crypto';
 import { ObjectId } from 'mongodb';
-import { Noto_Serif_Old_Uyghur } from 'next/font/google';
 
-export const getUser = async (searchParams: {
-  [key: string]: string | string[] | undefined;
-}) => {
+export const getUser = async (searchParams: Promise<{ id: string }>) => {
   try {
     const query: Record<string, unknown> = {};
-    // if (searchParams.id) {
-    //   query.id = searchParams.name;
-    // }
+    const { id } = await searchParams;
+    if (id) {
+      query.id = id;
+    }
 
     const { db } = await connectToDatabase();
-    const user = await db.collection('users').findOne(new ObjectId(searchParams.id))
+    const user = await db.collection('users').findOne(new ObjectId(id))
 
     return {
       ...user,

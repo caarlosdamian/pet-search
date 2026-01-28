@@ -12,7 +12,7 @@ import { redirect, notFound } from "next/navigation"
 import { connectToDatabase } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import DeleteOrganizationButton from "@/components/admin/delete-organization-button"
-import { CustomSession } from "@/lib/types"
+import { CustomSession, Organization, Stats } from "@/lib/types"
 
 export const metadata = {
   title: "Organization Details - PawFinder Admin",
@@ -28,7 +28,10 @@ export default async function OrganizationDetailsPage({ params }: { params: Prom
     redirect("/admin")
   }
 
-  const { organization, stats } = await getOrganizationDetails(id)
+  const { organization, stats } = await getOrganizationDetails(id) as unknown as {
+    organization: Organization
+    stats: Stats
+  }
 
   if (!organization) {
     notFound()

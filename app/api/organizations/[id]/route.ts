@@ -3,18 +3,21 @@ import { getServerSession } from "next-auth"
 import { connectToDatabase } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { authOptions } from "@/lib/auth"
+import { CustomSession } from "@/lib/types"
 
 // GET handler - fetch a single organization by ID
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+
+
     // Check if user is authenticated and is a super admin
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions) as CustomSession
+
+    const { id } = await params
 
     if (!session || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-
-    const id = params.id
 
     // Validate ObjectId format
     if (!ObjectId.isValid(id)) {
@@ -44,16 +47,16 @@ export async function GET(request: Request, { params }: { params: { id: string }
 }
 
 // PUT handler - update an organization
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Check if user is authenticated and is a super admin
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions) as CustomSession
+
+    const { id } = await params
 
     if (!session || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-
-    const id = params.id
 
     // Validate ObjectId format
     if (!ObjectId.isValid(id)) {
@@ -104,16 +107,16 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 }
 
 // DELETE handler - delete an organization
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Check if user is authenticated and is a super admin
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions) as CustomSession
+
+    const { id } = await params
 
     if (!session || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-
-    const id = params.id
 
     // Validate ObjectId format
     if (!ObjectId.isValid(id)) {

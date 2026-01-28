@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { connectToDatabase } from '@/lib/mongodb';
-import { ObjectId } from 'mongodb';
+import { ObjectId, PushOperator } from 'mongodb';
 import { authOptions } from '@/lib/auth';
+import { CustomSession } from '@/lib/types';
 
 export async function POST(request: Request) {
   try {
     // Check if user is authenticated
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions) as CustomSession;
 
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
     // Check if user has already applied for this pet
     const existingApplication = await db.collection('applications').findOne({
       petId: new ObjectId(data.petId),
-      userId: new ObjectId(session.user.id),
+      userId: new ObjectId(session.user.id as string),
     });
 
     if (existingApplication) {
@@ -72,7 +73,7 @@ export async function POST(request: Request) {
       .collection('users')
       .updateOne(
         { _id: new ObjectId(session.user.id) },
-        { $push: { applications: result.insertedId.toString() } }
+        { $push: { applications: result.insertedId.toString() } as PushOperator<Document> }
       );
 
     return NextResponse.json({
@@ -91,7 +92,7 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   try {
     // Check if user is authenticated
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions) as CustomSession;
 
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

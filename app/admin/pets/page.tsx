@@ -27,7 +27,7 @@ export const metadata = {
 export default async function AdminPetsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] }>
 }) {
   const params = await searchParams;
   const session = (await getServerSession(authOptions)) as CustomSession;

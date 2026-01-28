@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getUser } from '@/services/users';
 import UserForm from '@/components/admin/user-form';
+import { User } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Edit New Pet - PawFinder Admin',
@@ -16,10 +17,8 @@ export default async function EditPetPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-  const user = await getUser({id});
+  const user = await getUser(params);
 
-  console.log(user)
 
   return (
     <div className="space-y-6">
@@ -35,7 +34,7 @@ export default async function EditPetPage({
 
       <div className="rounded-lg border bg-white p-6 shadow-sm">
         {/* <PetForm pet={pet as unknown as Pet} /> */}
-        <UserForm user={JSON.stringify(user)}/>
+        <UserForm user={user as unknown as User} />
       </div>
     </div>
   );

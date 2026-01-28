@@ -11,17 +11,18 @@ export const metadata = {
   description: "Apply to adopt a pet from PawFinder.",
 }
 
-export default async function AdoptionPage({ params }: { params: { id: string } }) {
+export default async function AdoptionPage({ params }: { params: Promise<{ id: string }> }) {
   // Check if user is authenticated
   const session = await getServerSession(authOptions) as CustomSession
+  const { id } = await params
 
   if (!session) {
     // Redirect to login if not authenticated
-    redirect(`/login?redirect=/adopt/${params.id}`)
+    redirect(`/login?redirect=/adopt/${id}`)
   }
 
   // Fetch pet data
-  const pet = await getPet(params.id)
+  const pet = await getPet(id)
 
   if (!pet) {
     notFound()

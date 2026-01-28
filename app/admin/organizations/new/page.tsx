@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import OrganizationForm from "@/components/admin/organization-form"
+import { CustomSession } from "@/lib/types"
 
 export const metadata: Metadata = {
   title: "Add New Organization - PawFinder Admin",
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default async function AddOrganizationPage() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions) as CustomSession
 
   // Only super admins can access this page
   if (!session || session.user.role !== "admin") {

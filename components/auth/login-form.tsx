@@ -31,12 +31,10 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Define form schema with Zod using memo to access translations
-  // Define form schema with Zod using memo to access translations
   const loginSchema = z.object({
     email: z.string().email({ message: t('loginPage.validation.emailInvalid') }),
     password: z.string().min(1, { message: t('loginPage.validation.passwordRequired') }),
-    rememberMe: z.boolean().default(false),
+    rememberMe: z.boolean().optional(),
   });
 
   type LoginFormValues = z.infer<typeof loginSchema>;
@@ -72,7 +70,6 @@ export default function LoginForm() {
       if (result?.error) {
         setError(t('loginPage.errors.invalid'));
       } else {
-        // Successful login
         router.push(callbackUrl);
         router.refresh();
       }

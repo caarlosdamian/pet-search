@@ -20,7 +20,7 @@ export const metadata = {
 export default async function AdminUsersPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] }>
 }) {
   const params = await searchParams;
   const { users, totalPages } = await getUsers({

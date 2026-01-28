@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Document, ObjectId } from 'mongodb';
 
 export interface Organization {
   id: string;
@@ -53,7 +53,7 @@ export interface Pet {
   updatedAt: string;
 }
 
-export interface User {
+export interface User extends Document {
   id: string;
   name: string;
   email: string;
@@ -155,4 +155,12 @@ export interface UserModel {
   applications: ObjectId[];
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface Stats {
+  totalPets: number;
+  availablePets: number;
+  totalAdmins: number;
+  totalApplications: number;
+  pendingApplications: number;
 }

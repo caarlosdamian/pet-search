@@ -5,17 +5,19 @@ import { ObjectId } from "mongodb"
 import { authOptions } from "@/lib/auth"
 import { CustomSession } from "@/lib/types"
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Check if user is authenticated
     const session = await getServerSession(authOptions) as CustomSession
+
+    const { id } = await params
 
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     // Validate ObjectId format
-    if (!ObjectId.isValid(params.id)) {
+    if (!ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid application ID" }, { status: 400 })
     }
 
@@ -26,7 +28,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const applications = await db
       .collection("applications")
       .aggregate([
-        { $match: { _id: new ObjectId(params.id) } },
+        { $match: { _id: new ObjectId(id) } },
         {
           $lookup: {
             from: "pets",

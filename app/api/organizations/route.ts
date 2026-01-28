@@ -2,11 +2,12 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { connectToDatabase } from "@/lib/mongodb"
 import { authOptions } from "@/lib/auth"
+import { CustomSession } from "@/lib/types"
 
 export async function GET() {
   try {
     // Check if user is authenticated and is a super admin
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions) as CustomSession
 
     if (!session || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -40,7 +41,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     // Check if user is authenticated and is a super admin
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions) as CustomSession
 
     if (!session || session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

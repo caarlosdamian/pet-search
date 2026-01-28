@@ -14,6 +14,7 @@ import OrganizationFilters from "@/components/admin/organization-filters"
 import PaginationControls from "@/components/pets/pagination-controls"
 import OrganizationsTableSkeleton from "@/components/admin/organizations-table-skeleton"
 import { redirect } from "next/navigation"
+import { CustomSession } from "@/lib/types"
 
 export const metadata = {
   title: "Manage Organizations - PawFinder Admin",
@@ -23,9 +24,10 @@ export const metadata = {
 export default async function AdminOrganizationsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] }>
 }) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions) as CustomSession
+  const params = await searchParams
 
   // Only super admins can access this page
   if (!session || session.user.role !== "admin") {
@@ -64,7 +66,7 @@ export default async function AdminOrganizationsPage({
         </CardHeader>
         <CardContent>
           <Suspense fallback={<OrganizationsTableSkeleton />}>
-            <OrganizationsTableWithData searchParams={searchParams} />
+            <OrganizationsTableWithData searchParams={params} />
           </Suspense>
         </CardContent>
       </Card>
