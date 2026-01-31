@@ -172,5 +172,50 @@
       "invalid": "Correo electrónico o contraseña inválidos. Por favor intenta de nuevo.",
       "generic": "Ocurrió un error inesperado. Por favor intenta de nuevo."
     }
+  },
+  "forgotPasswordPage": {
+    "title": "Restablecer tu contraseña",
+    "subtitle": "Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "juan@ejemplo.com",
+    "submit": "Enviar enlace",
+    "submitting": "Enviando...",
+    "backToLogin": "Volver a inicio de sesión",
+    "validation": {
+      "emailInvalid": "Por favor ingresa un correo electrónico válido"
+    },
+    "success": {
+      "title": "Revisa tu correo",
+      "description": "Si existe una cuenta con ese correo, te hemos enviado instrucciones para restablecer tu contraseña."
+    },
+    "errors": {
+      "generic": "Ocurrió un error inesperado. Por favor intenta de nuevo."
+    }
+  },
+  "resetPasswordPage": {
+    "title": "Elige una nueva contraseña",
+    "subtitle": "Por favor ingresa tu nueva contraseña a continuación.",
+    "passwordLabel": "Nueva contraseña",
+    "passwordPlaceholder": "Ingresa tu nueva contraseña",
+    "confirmPasswordLabel": "Confirmar nueva contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu nueva contraseña",
+    "submit": "Restablecer contraseña",
+    "submitting": "Restableciendo...",
+    "backToLogin": "Volver al inicio de sesión",
+    "validation": {
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres",
+      "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula",
+      "passwordLowercase": "La contraseña debe contener al menos una letra minúscula",
+      "passwordNumber": "La contraseña debe contener al menos un número",
+      "passwordsNoMatch": "Las contraseñas no coinciden"
+    },
+    "success": {
+      "title": "Contraseña restablecida con éxito",
+      "description": "Tu contraseña ha sido restablecida correctamente. Ahora puedes iniciar sesión con tu nueva contraseña."
+    },
+    "errors": {
+      "invalid": "El enlace de restablecimiento es inválido o ha expirado.",
+      "generic": "Ocurrió un error inesperado. Por favor intenta de nuevo."
+    }
   }
 }

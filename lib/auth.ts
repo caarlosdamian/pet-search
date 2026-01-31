@@ -27,6 +27,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
+        // Todo: add error handeling
         const { email, password } = req.body as UserT;
         const { db } = await connectToDatabase();
         const existingUser = await db.collection('users').findOne({ email });
@@ -35,6 +36,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const passwordMatch = compareSync(password, existingUser.password);
+        console.log('passwordMatch', passwordMatch)
         if (passwordMatch) {
           return {
             email: existingUser.email,

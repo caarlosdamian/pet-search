@@ -172,5 +172,50 @@
       "invalid": "Invalid email or password. Please try again.",
       "generic": "An unexpected error occurred. Please try again."
     }
+  },
+  "forgotPasswordPage": {
+    "title": "Reset your password",
+    "subtitle": "Enter your email address and we will send you a link to reset your password.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "john@example.com",
+    "submit": "Send reset link",
+    "submitting": "Sending...",
+    "backToLogin": "Back to login",
+    "validation": {
+      "emailInvalid": "Please enter a valid email address"
+    },
+    "success": {
+      "title": "Check your email",
+      "description": "If an account exists for that email, we have sent you password reset instructions."
+    },
+    "errors": {
+      "generic": "An unexpected error occurred. Please try again."
+    }
+  },
+  "resetPasswordPage": {
+    "title": "Choose a new password",
+    "subtitle": "Please enter your new password below.",
+    "passwordLabel": "New Password",
+    "passwordPlaceholder": "Enter your new password",
+    "confirmPasswordLabel": "Confirm New Password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "submit": "Reset password",
+    "submitting": "Resetting...",
+    "backToLogin": "Back to login",
+    "validation": {
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordUppercase": "Password must contain at least one uppercase letter",
+      "passwordLowercase": "Password must contain at least one lowercase letter",
+      "passwordNumber": "Password must contain at least one number",
+      "passwordsNoMatch": "Passwords don't match"
+    },
+    "success": {
+      "title": "Password reset successful",
+      "description": "Your password has been reset successfully. You can now log in with your new password."
+    },
+    "errors": {
+      "invalid": "Reset token is invalid or has expired.",
+      "generic": "An unexpected error occurred. Please try again."
+    }
   }
 }
