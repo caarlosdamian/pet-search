@@ -9,6 +9,7 @@ import { addFavorites, removedFavorites } from '@/lib/actions/pets';
 import { useSession } from 'next-auth/react';
 import { redirect, usePathname } from 'next/navigation';
 import { startTransition } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function PetCard({
   pet,
@@ -19,6 +20,7 @@ export default function PetCard({
   isFavorite: boolean;
   addFavoritePet: (action: { action: 'add' | 'remove'; id: string }) => void;
 }) {
+  const { t } = useTranslation();
   const { data } = useSession() as unknown as { data: CustomSession };
   const pathname = usePathname();
 
@@ -34,7 +36,7 @@ export default function PetCard({
         />
         <button
           className="absolute right-2 top-2 rounded-full bg-white p-1.5 text-gray-900 shadow-sm hover:bg-rose-50 z-50"
-          aria-label="Add to favorites"
+          aria-label={t('petCard.addToFavorites')}
           onClick={() => {
             if (!data) {
               redirect(`/login?redirect=/pets`);
@@ -76,7 +78,7 @@ export default function PetCard({
             variant="outline"
             className="text-xs font-medium text-gray-700"
           >
-            {pet.age} {pet.age === 1 ? 'year' : 'years'}
+            {pet.age} {pet.age === 1 ? t('petDetail.yearOld') : t('petDetail.yearsOld')}
           </Badge>
         </div>
         <p className="text-sm text-gray-500 line-clamp-2">{pet.description}</p>
@@ -88,7 +90,7 @@ export default function PetCard({
             variant="ghost"
             className="text-rose-600 hover:text-rose-500 hover:bg-rose-50"
           >
-            <Link href={`/pets/${pet._id}`}>View Details</Link>
+            <Link href={`/pets/${pet._id}`}>{t('petCard.viewDetails')}</Link>
           </Button>
         </div>
       </div>

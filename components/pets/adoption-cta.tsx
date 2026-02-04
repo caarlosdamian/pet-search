@@ -13,47 +13,49 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import type { Pet } from "@/lib/types"
+import { useTranslation } from "react-i18next"
 
 export default function AdoptionCTA({ pet }: { pet: Pet }) {
+  const { t } = useTranslation();
   const [dialogOpen, setDialogOpen] = useState(false)
-
+  console.log('pet', pet)
   return (
     <div className="mt-8 border-t border-gray-200 pt-8">
-      <h2 className="text-lg font-medium text-gray-900">Ready to meet {pet.name}?</h2>
+      <h2 className="text-lg font-medium text-gray-900">{t('adoptionCTA.title',
+        { replace: { name: pet.name } }
+      )}</h2>
       <p className="mt-2 text-sm text-gray-500">
-        Start the adoption process by submitting an application. Our team will review your application and contact you
-        to schedule a meet and greet.
+        {t('adoptionCTA.description')}
       </p>
 
       {true ? (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="mt-6 w-full bg-rose-600 hover:bg-rose-500">Apply to Adopt {pet.name}</Button>
+            <Button className="mt-6 w-full bg-rose-600 hover:bg-rose-500">{t('adoptionCTA.applyButton', { name: pet.name })}</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Adopt {pet.name}</DialogTitle>
+              <DialogTitle>{t('adoptionCTA.dialog.title', { name: pet.name })}</DialogTitle>
               <DialogDescription>
-                You&apos;re about to start the adoption process for {pet.name}. This will take you to our adoption
-                application form.
+                {t('adoptionCTA.dialog.description', { name: pet.name })}
               </DialogDescription>
             </DialogHeader>
             <div className="py-4">
-              <p className="text-sm text-gray-500">The adoption process includes:</p>
+              <p className="text-sm text-gray-500">{t('adoptionCTA.dialog.processTitle')}</p>
               <ul className="mt-2 list-disc pl-5 text-sm text-gray-500">
-                <li>Completing an adoption application</li>
-                <li>A review by our adoption counselors</li>
-                <li>A meet and greet with {pet.name}</li>
-                <li>Home visit (for some animals)</li>
-                <li>Adoption fee payment (${pet.adoptionFee})</li>
+                <li>{t('adoptionCTA.dialog.step1')}</li>
+                <li>{t('adoptionCTA.dialog.step2')}</li>
+                <li>{t('adoptionCTA.dialog.step3', { name: pet.name })}</li>
+                <li>{t('adoptionCTA.dialog.step4')}</li>
+                <li>{t('adoptionCTA.dialog.step5', { fee: `$${pet.adoptionFee}` })}</li>
               </ul>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setDialogOpen(false)}>
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button asChild className="bg-rose-600 hover:bg-rose-500">
-                <Link href={`/adopt/${pet._id}`}>Continue to Application</Link>
+                <Link href={`/adopt/${pet._id}`}>{t('adoptionCTA.dialog.continueButton')}</Link>
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -61,12 +63,12 @@ export default function AdoptionCTA({ pet }: { pet: Pet }) {
       ) : (
         <div className="mt-6 space-y-4">
           <Button asChild className="w-full bg-rose-600 hover:bg-rose-500">
-            <Link href={`/login?redirect=/pets/${pet._id}`}>Log in to Apply</Link>
+            <Link href={`/login?redirect=/pets/${pet._id}`}>{t('adoptionCTA.auth.loginToApply')}</Link>
           </Button>
           <p className="text-center text-sm text-gray-500">
-            Don&apos;t have an account?{" "}
+            {t('adoptionCTA.auth.noAccount')}{" "}
             <Link href={`/signup?redirect=/pets/${pet._id}`} className="font-medium text-rose-600 hover:text-rose-500">
-              Sign up
+              {t('adoptionCTA.auth.signup')}
             </Link>
           </p>
         </div>

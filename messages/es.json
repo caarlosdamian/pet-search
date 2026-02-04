@@ -24,7 +24,32 @@
     "details": "Detalles de la mascota",
     "adopt": "Adoptar",
     "favorite": "Favorito",
-    "share": "Compartir"
+    "share": "Compartir",
+    "attributes": {
+      "types": {
+        "dog": "Perro",
+        "cat": "Gato",
+        "bird": "Ave",
+        "small-animal": "Animal Pequeño",
+        "other": "Otro"
+      },
+      "ages": {
+        "baby": "Cachorro",
+        "young": "Joven",
+        "adult": "Adulto",
+        "senior": "Senior"
+      },
+      "sizes": {
+        "small": "Pequeño",
+        "medium": "Mediano",
+        "large": "Grande",
+        "extra-large": "Extra Grande"
+      },
+      "genders": {
+        "male": "Macho",
+        "female": "Hembra"
+      }
+    }
   },
   "petsPage": {
     "title": "Encuentra a Tu Mascota Perfecta",
@@ -216,6 +241,66 @@
     "errors": {
       "invalid": "El enlace de restablecimiento es inválido o ha expirado.",
       "generic": "Ocurrió un error inesperado. Por favor intenta de nuevo."
+    }
+  },
+  "petFilters": {
+    "title": "Filtros",
+    "reset": "Restablecer",
+    "apply": "Aplicar Filtros",
+    "categories": {
+      "type": "Tipo de Mascota",
+      "age": "Edad",
+      "size": "Tamaño",
+      "gender": "Género",
+      "location": "Ubicación"
+    },
+    "types": {
+      "dog": "Perros",
+      "cat": "Gatos",
+      "bird": "Aves",
+      "small-animal": "Animales Pequeños",
+      "other": "Otros"
+    },
+    "ages": {
+      "baby": "Cachorro",
+      "young": "Joven",
+      "adult": "Adulto",
+      "senior": "Senior"
+    },
+    "sizes": {
+      "small": "Pequeño",
+      "medium": "Mediano",
+      "large": "Grande",
+      "extra-large": "Extra Grande"
+    },
+    "genders": {
+      "male": "Macho",
+      "female": "Hembra"
+    }
+  },
+  "petCard": {
+    "viewDetails": "Ver Detalles",
+    "addToFavorites": "Agregar a favoritos"
+  },
+  "adoptionCTA": {
+    "title": "¿Listo para conocer a {{name}}?",
+    "description": "Comienza el proceso de adopción enviando una solicitud. Nuestro equipo revisará tu solicitud y te contactará para programar una visita.",
+    "applyButton": "Solicitar Adopción de {{name}}",
+    "dialog": {
+      "title": "Adoptar a {{name}}",
+      "description": "Estás por comenzar el proceso de adopción para {{name}}. Esto te llevará a nuestro formulario de solicitud de adopción.",
+      "processTitle": "El proceso de adopción incluye:",
+      "step1": "Completar una solicitud de adopción",
+      "step2": "Una revisión por nuestros consejeros de adopción",
+      "step3": "Una visita para conocer a {{name}}",
+      "step4": "Visita al hogar (para algunos animales)",
+      "step5": "Pago de la tarifa de adopción ({fee})",
+      "continueButton": "Continuar a la Solicitud"
+    },
+    "auth": {
+      "loginToApply": "Inicia sesión para solicitar",
+      "noAccount": "¿No tienes una cuenta?",
+      "signup": "Regístrate"
     }
   }
 }

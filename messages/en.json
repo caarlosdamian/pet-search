@@ -24,7 +24,32 @@
     "details": "Pet details",
     "adopt": "Adopt",
     "favorite": "Favorite",
-    "share": "Share"
+    "share": "Share",
+    "attributes": {
+      "types": {
+        "dog": "Dog",
+        "cat": "Cat",
+        "bird": "Bird",
+        "small-animal": "Small Animal",
+        "other": "Other"
+      },
+      "ages": {
+        "baby": "Baby",
+        "young": "Young",
+        "adult": "Adult",
+        "senior": "Senior"
+      },
+      "sizes": {
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "extra-large": "Extra Large"
+      },
+      "genders": {
+        "male": "Male",
+        "female": "Female"
+      }
+    }
   },
   "petsPage": {
     "title": "Find Your Perfect Pet",
@@ -69,9 +94,9 @@
     },
     "metadata": {
       "titleSuffix": "- PawFinder",
-      "descriptionTemplate": "Meet {name}, a {age}-year-old {breed} looking for a loving home.",
-      "ogTitleTemplate": "Meet {name} - PawFinder",
-      "ogDescriptionTemplate": "{name} is a {age}-year-old {breed} looking for a loving home."
+      "descriptionTemplate": "Meet {{name}}, a {age}-year-old {breed} looking for a loving home.",
+      "ogTitleTemplate": "Meet {{name}} - PawFinder",
+      "ogDescriptionTemplate": "{{name}} is a {age}-year-old {breed} looking for a loving home."
     }
   },
   "similarPets": {
@@ -216,6 +241,66 @@
     "errors": {
       "invalid": "Reset token is invalid or has expired.",
       "generic": "An unexpected error occurred. Please try again."
+    }
+  },
+  "petFilters": {
+    "title": "Filters",
+    "reset": "Reset",
+    "apply": "Apply Filters",
+    "categories": {
+      "type": "Pet Type",
+      "age": "Age",
+      "size": "Size",
+      "gender": "Gender",
+      "location": "Location"
+    },
+    "types": {
+      "dog": "Dogs",
+      "cat": "Cats",
+      "bird": "Birds",
+      "small-animal": "Small Animals",
+      "other": "Other"
+    },
+    "ages": {
+      "baby": "Baby",
+      "young": "Young",
+      "adult": "Adult",
+      "senior": "Senior"
+    },
+    "sizes": {
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large",
+      "extra-large": "Extra Large"
+    },
+    "genders": {
+      "male": "Male",
+      "female": "Female"
+    }
+  },
+  "petCard": {
+    "viewDetails": "View Details",
+    "addToFavorites": "Add to favorites"
+  },
+  "adoptionCTA": {
+    "title": "Ready to meet {{name}}?",
+    "description": "Start the adoption process by submitting an application. Our team will review your application and contact you to schedule a meet and greet.",
+    "applyButton": "Apply to Adopt {{name}}",
+    "dialog": {
+      "title": "Adopt {{name}}",
+      "description": "You're about to start the adoption process for {{name}}. This will take you to our adoption application form.",
+      "processTitle": "The adoption process includes:",
+      "step1": "Completing an adoption application",
+      "step2": "A review by our adoption counselors",
+      "step3": "A meet and greet with {{name}}",
+      "step4": "Home visit (for some animals)",
+      "step5": "Adoption fee payment ({{fee}})",
+      "continueButton": "Continue to Application"
+    },
+    "auth": {
+      "loginToApply": "Log in to Apply",
+      "noAccount": "Don't have an account?",
+      "signup": "Sign up"
     }
   }
 }

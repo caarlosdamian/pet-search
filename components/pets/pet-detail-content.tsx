@@ -18,7 +18,7 @@ interface PetDetailContentProps {
 
 export default function PetDetailContent({ pet, similarPets }: PetDetailContentProps) {
   const { t } = useTranslation();
-  console.log(similarPets, 'pet');
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -68,16 +68,16 @@ export default function PetDetailContent({ pet, similarPets }: PetDetailContentP
 
             <div className="mt-4 flex flex-wrap gap-2">
               <Badge variant="secondary" className="text-sm">
-                {pet.type}
+                {t(`pets.attributes.types.${pet.type.toLowerCase()}`)}
               </Badge>
               <Badge variant="secondary" className="text-sm">
                 {pet.breed}
               </Badge>
               <Badge variant="secondary" className="text-sm">
-                {pet.gender}
+                {t(`pets.attributes.genders.${pet.gender.toLowerCase()}`)}
               </Badge>
               <Badge variant="secondary" className="text-sm">
-                {pet.size}
+                {t(`pets.attributes.sizes.${pet.size.toLowerCase()}`)}
               </Badge>
             </div>
 

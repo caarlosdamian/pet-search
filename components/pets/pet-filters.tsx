@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -14,6 +15,7 @@ import { usePetFilters } from '@/hooks/usePetFilters';
 import PetFiltersSkeleton from './pet-filters-skeleton';
 
 export default function PetFilters() {
+  const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { filters: petFilters, isLoading } = usePetFilters();
@@ -81,14 +83,14 @@ export default function PetFilters() {
   return (
     <div className="sticky top-20">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+        <h2 className="text-lg font-medium text-gray-900">{t('petFilters.title')}</h2>
         <Button
           variant="ghost"
           size="sm"
           onClick={resetFilters}
           className="text-sm text-gray-500 hover:text-gray-700"
         >
-          Reset
+          {t('petFilters.reset')}
         </Button>
       </div>
 
@@ -100,7 +102,7 @@ export default function PetFilters() {
           {/* Pet Type Filter */}
           <AccordionItem value="type">
             <AccordionTrigger className="text-sm font-medium text-gray-900">
-              Pet Type
+              {t('petFilters.categories.type')}
             </AccordionTrigger>
             <AccordionContent>
               {isLoading ? (
@@ -116,7 +118,7 @@ export default function PetFilters() {
                       />
                       <label
                         htmlFor={`type-${type}`}
-                        className="ml-2 text-sm text-gray-600 capitalize"
+                        className="ml-2 text-sm text-gray-600"
                       >
                         {type.replace('-', ' ')}
                       </label>
@@ -130,7 +132,7 @@ export default function PetFilters() {
           {/* Age Filter */}
           <AccordionItem value="age">
             <AccordionTrigger className="text-sm font-medium text-gray-900">
-              Age
+              {t('petFilters.categories.age')}
             </AccordionTrigger>
             <AccordionContent>
               {isLoading ? (
@@ -146,9 +148,9 @@ export default function PetFilters() {
                       />
                       <label
                         htmlFor={`age-${age}`}
-                        className="ml-2 text-sm text-gray-600 capitalize"
+                        className="ml-2 text-sm text-gray-600"
                       >
-                        {age}
+                        {t(`petFilters.ages.${age}`)}
                       </label>
                     </div>
                   ))}
@@ -160,7 +162,7 @@ export default function PetFilters() {
           {/* Size Filter */}
           <AccordionItem value="size">
             <AccordionTrigger className="text-sm font-medium text-gray-900">
-              Size
+              {t('petFilters.categories.size')}
             </AccordionTrigger>
             <AccordionContent>
               {isLoading ? (
@@ -176,9 +178,9 @@ export default function PetFilters() {
                       />
                       <label
                         htmlFor={`size-${size}`}
-                        className="ml-2 text-sm text-gray-600 capitalize"
+                        className="ml-2 text-sm text-gray-600"
                       >
-                        {size.replace('-', ' ')}
+                        {t(`petFilters.sizes.${size}`)}
                       </label>
                     </div>
                   ))}
@@ -190,7 +192,7 @@ export default function PetFilters() {
           {/* Gender Filter */}
           <AccordionItem value="gender">
             <AccordionTrigger className="text-sm font-medium text-gray-900">
-              Gender
+              {t('petFilters.categories.gender')}
             </AccordionTrigger>
             <AccordionContent>
               {isLoading ? (
@@ -206,9 +208,9 @@ export default function PetFilters() {
                       />
                       <label
                         htmlFor={`gender-${gender}`}
-                        className="ml-2 text-sm text-gray-600 capitalize"
+                        className="ml-2 text-sm text-gray-600"
                       >
-                        {gender}
+                        {t(`petFilters.genders.${gender.toLowerCase()}`)}
                       </label>
                     </div>
                   ))}
@@ -220,7 +222,7 @@ export default function PetFilters() {
           {/* Location Filter */}
           <AccordionItem value="location">
             <AccordionTrigger className="text-sm font-medium text-gray-900">
-              Location
+              {t('petFilters.categories.location')}
             </AccordionTrigger>
             <AccordionContent>
               {isLoading ? (
@@ -258,7 +260,7 @@ export default function PetFilters() {
         onClick={applyFilters}
         className="mt-6 w-full bg-rose-600 hover:bg-rose-500"
       >
-        Apply Filters
+        {t('petFilters.apply')}
       </Button>
     </div>
   );
